@@ -2,9 +2,11 @@
   "kind": "altai",
   "vertices": 120409,
   "triangles": 228280,
-  "maxHeight": 2865.449462890625,
+  "maxHeight": 2870.69140625,
   "trees": 3800,
   "rocks": 850,
   "grass": 2800,
-  "roadMaxGrade": 0.06807964709474103
+  "roadMaxGrade": 0.06807964709474103,
+  "landformVersion": 2,
+  "watercoursePoints": 481
 }

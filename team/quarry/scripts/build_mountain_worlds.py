@@ -3,14 +3,18 @@
 Run with Blender --background --python this-file -- [quarry|altai|both] [--render].
 The working quarry is imported only for .blend previews, never rewritten.
 """
-import bpy, math, json, random, sys, struct
+import bpy, math, json, random, sys, struct, os
 import numpy as np
 from pathlib import Path
 from mathutils import Vector
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from terrain_sculpting import sculpt_relief, river_x, watercourse_profile
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'dist/assets/mountains';OUT.mkdir(parents=True,exist_ok=True)
 SOURCE=ROOT.parent/'mountain-worlds';SOURCE.mkdir(exist_ok=True)
+if os.environ.get('QUARRY_ART_OUTPUT'):
+    SOURCE=Path(os.environ['QUARRY_ART_OUTPUT']);SOURCE.mkdir(parents=True,exist_ok=True)
 ARGS=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else []
 
 def smooth(a):
@@ -72,6 +76,7 @@ def make_field(kind):
     # Layered bedrock steps make the foothills visibly fractured.
     terrace=(np.floor((mountain+foothill)/18)*18-(mountain+foothill))*smooth(mountain/300)*.05
     h=168+smooth((distance-28)/220)*(mountain+foothill+terrace)
+    h=sculpt_relief(x,z,h,kind,noise)
     # An incised dry drainage channel on the southern foreland.
     creek=np.abs(z-(820+150*np.sin(x/430)+.12*x));h-=smooth((distance-80)/220)*(17 if altai else 25)*np.exp(-(creek/42)**2)
     rd,rh,station=road_distance(x,z)
@@ -161,6 +166,17 @@ def terrain_mesh(kind,xs,zs,h,rd,stone):
     dz,dx=np.gradient(h,zs,xs);slope=np.hypot(dx,dz);mottle=noise(x,z,170,3)*.12+noise(x,z,35,31)*.045
     grass=np.array([.22,.29,.12] if kind=='altai' else [.34,.32,.21]);rock=np.array([.34,.35,.34] if kind=='altai' else [.39,.35,.29]);cliff=smooth((slope-.37)/.8)
     c=grass[None,None,:]*(1-cliff[:,:,None])+rock[None,None,:]*cliff[:,:,None];c+=mottle[:,:,None]*.35
+    # Dark jointed rock faces and green shelves use geometry-derived slope masks.
+    stone_tint=np.array([.065,.082,.078] if kind=='altai' else [.095,.108,.095])
+    meadow_tint=np.array([.19,.355,.075] if kind=='altai' else [.29,.335,.135])
+    rock_face=smooth((slope-.52)/.9)
+    wet=np.exp(-(np.abs(x-river_x(z))/110)**2)*smooth((z+710)/100)*(1-smooth((z-780)/100))
+    meadow=meadow_tint[None,None,:]+np.array([-.025,.065,-.01])*wet[:,:,None]
+    geology=meadow*(1-rock_face[:,:,None])+stone_tint*rock_face[:,:,None]
+    strata=.5+.5*np.sin(h*.16+noise(x,z,120,63)*3)
+    geology*= (.86+strata*.17+mottle*.4)[:,:,None]
+    exterior=smooth(np.hypot(np.maximum(0,np.abs(x)-500),np.maximum(0,np.abs(z)-420))/130)
+    c=c*(1-exterior[:,:,None]*.88)+geology*exterior[:,:,None]*.88
     # Depositional fans and mineral seams break up the single sand-colour field.
     scree=smooth((noise(x,z,240,20)+.2)*1.3)*smooth(slope*1.4);c=c*(1-scree[:,:,None]*.3)+np.array([.44,.40,.31])*scree[:,:,None]*.3
     if kind=='altai':
@@ -194,6 +210,7 @@ def placement_data(kind,xs,zs,h,lake):
     count=22000;angles=np.array([rng.random()*math.tau for _ in range(count)]);radii=np.array([620+(rng.random()**1.8)*3300 for _ in range(count)]);xx=np.cos(angles)*radii;zz=np.sin(angles)*radii;dist,_,_=road_distance(xx,zz)
     for x,z,d in zip(xx,zz,dist):
         x,z=float(x),float(z)
+        if -710<z<880 and abs(x-float(river_x(z)))<34:continue
         if d<30 or (abs(x)<555 and abs(z)<475) or ((x-lx)/(rx*1.4))**2+((z-lz)/(rz*1.4))**2<1:continue
         y=sample(xs,zs,h,x,z);slope=math.hypot((sample(xs,zs,h,x+5,z)-sample(xs,zs,h,x-5,z))/10,(sample(xs,zs,h,x,z+5)-sample(xs,zs,h,x,z-5))/10)
         remote=abs(x)>910 or abs(z)>810
@@ -215,6 +232,8 @@ def build(kind):
     export_selected(OUT/(kind+'-landscape.glb'),[ground,road])
     props=placement_data(kind,xs,zs,h,lake)
     metadata=dict(version=1,kind=kind,xs=xs.tolist(),zs=zs.tolist(),heightFile=kind+'-heights.f32',lake=list(lake)+[147],road=[[round(float(s),4),*map(float,[p[0],p[2],p[1]])] for s,p in zip(ROAD_S,ROAD)],roadWidth=16,triangles=triangles,**props)
+    metadata['landformVersion']=2
+    metadata['watercourse']=watercourse_profile(xs,zs,h,sample)
     (OUT/(kind+'-profile.json')).write_text(json.dumps(metadata,separators=(',',':')));h.astype('<f4').tofile(OUT/(kind+'-heights.f32'))
     # Editable Blender scene retains real instanced tree geometry for art direction.
     for i,(x,y,z,scale,angle) in enumerate(props['trees']):
@@ -228,9 +247,13 @@ def build(kind):
     water=material('Lake / mountain water',(.025,.18,.19),roughness=.18);p=water.node_tree.nodes.get('Principled BSDF');p.inputs['Metallic'].default_value=.35
     lx,lz,rx,rz=lake;vertices=[(lx,-lz,147)]+[(lx+rx*.92*math.cos(a),-lz+rz*.92*math.sin(a),147) for a in np.linspace(0,math.tau,64,endpoint=False)];mesh('Mountain lake',vertices,[(0,i+1,(i+1)%64+1) for i in range(64)],water)
     # Append original assets for a faithful framing check, without saving over them.
-    with bpy.data.libraries.load(str(ROOT.parent/'Quarry_Diorama.blend'),link=False) as (source,dest):dest.objects=[n for n in source.objects if not n.startswith(('Camera','Light','Area','Sun'))]
-    for ob in dest.objects:
-        if ob and not ob.users_collection:scene.collection.objects.link(ob)
+    preview_source=ROOT.parent/'Quarry_Diorama.blend'
+    if preview_source.exists():
+        with bpy.data.libraries.load(str(preview_source),link=False) as (source,dest):dest.objects=[n for n in source.objects if not n.startswith(('Camera','Light','Area','Sun'))]
+        for ob in dest.objects:
+            if ob and not ob.users_collection:scene.collection.objects.link(ob)
+    else:
+        bpy.ops.import_scene.gltf(filepath=str(ROOT/'dist/assets/quarry-v4.glb'))
     scene.world=bpy.data.worlds.new('Atmosphere');scene.world.use_nodes=True;scene.world.node_tree.nodes.get('Background').inputs[0].default_value=(.5,.61,.72,1);scene.world.node_tree.nodes.get('Background').inputs[1].default_value=.55
     bpy.ops.object.light_add(type='SUN',location=(-900,-500,1800));sun=bpy.context.object;sun.rotation_euler=(math.radians(28),math.radians(-25),math.radians(-25));sun.data.energy=2.2;sun.data.angle=.12
     bpy.ops.object.camera_add(location=(1250,-1530,1200));camera=bpy.context.object;camera.rotation_euler=(Vector((0,150,120))-camera.location).to_track_quat('-Z','Y').to_euler();camera.data.lens=34;camera.data.clip_end=40000;scene.camera=camera
@@ -238,6 +261,8 @@ def build(kind):
     scene.view_settings.view_transform='AgX';scene.render.image_settings.file_format='PNG';scene.render.filepath=str(SOURCE/(kind+'-overview.png'))
     bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE/(kind+'-mountains.blend')))
     report={'kind':kind,'vertices':int(h.size),'triangles':triangles,'maxHeight':float(h.max()),'trees':len(props['trees']),'rocks':len(props['rocks']),'grass':len(props['grass']),'roadMaxGrade':float(np.max(np.abs(np.diff(ROAD[:,2]))/np.linalg.norm(np.diff(ROAD[:,:2],axis=0),axis=1)))}
+    report['landformVersion']=2
+    report['watercoursePoints']=len(metadata['watercourse']['points'])
     (OUT/(kind+'-report.json')).write_text(json.dumps(report,indent=2));print('MOUNTAIN_BUILD',json.dumps(report),flush=True)
     if '--render' in ARGS:bpy.ops.render.render(write_still=True)
 

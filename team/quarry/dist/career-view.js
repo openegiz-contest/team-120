@@ -12,7 +12,7 @@ import {createMineRide} from './mine-ride.mjs?v=network-1';
 import {createQuarryMineConnection} from './quarry-mine-connection.mjs?v=network-1';
 import {resolveQuarryMap,mountQuarryMaps} from './quarry-maps.mjs';
 import {createAltaiEnvironment} from './altai-environment.mjs?v=mountains-1';
-import {loadMountainLandscape,mountainOverview} from './mountain-landscape.mjs?v=1';
+import {loadMountainLandscape,mountainOverview,mountainSceneryView} from './mountain-landscape.mjs?v=relief-2';
 
 const activeMap=resolveQuarryMap(location.pathname);mountQuarryMaps(document,activeMap);
 const $=s=>document.querySelector(s),SAVE_KEY=activeMap.saveKey;
@@ -110,6 +110,11 @@ async function init(){
     onExit:()=>{sim.paused=mineWasPaused;sim.accumulator=0;following=mineWasFollowing;controls.enabled=mineControlsEnabled;save();updateUI()}
   });
   mine.resize(container.clientWidth,container.clientHeight);
+  const sceneryButton=document.createElement('button');sceneryButton.id='landscape-view';sceneryButton.textContent='△ Рельеф';sceneryButton.title='Ущелье и водопад';
+  sceneryButton.onclick=()=>{following=false;const view=mountainSceneryView(camera.aspect);controls.target.fromArray(view.target);camera.position.fromArray(view.position);camera.fov=view.fov;camera.updateProjectionMatrix();controls.update()};
+  document.querySelector('.camera-buttons').append(sceneryButton);
+  if(new URLSearchParams(location.search).get('view')==='landscape')sceneryButton.click();
+  document.body.dataset.landscapeReady='true';
   new ResizeObserver(()=>{camera.aspect=container.clientWidth/container.clientHeight;camera.updateProjectionMatrix();mine?.resize(container.clientWidth,container.clientHeight);renderer.setSize(container.clientWidth,container.clientHeight)}).observe(container);renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();sim.paused=true;save();$('#load-error').hidden=false});requestAnimationFrame(frame);
 }
 init().catch(e=>{console.error(e);$('#asset-loading').hidden=true;$('#load-error').hidden=false});

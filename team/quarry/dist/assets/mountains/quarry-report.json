@@ -2,9 +2,11 @@
   "kind": "quarry",
   "vertices": 120409,
   "triangles": 228280,
-  "maxHeight": 1953.61962890625,
+  "maxHeight": 1945.5887451171875,
   "trees": 1500,
   "rocks": 1450,
   "grass": 2800,
-  "roadMaxGrade": 0.06807964709474103
+  "roadMaxGrade": 0.06807964709474103,
+  "landformVersion": 2,
+  "watercoursePoints": 481
 }

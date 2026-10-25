@@ -12,8 +12,8 @@
     },
     {
       "path": "altai.html",
-      "bytes": 6415,
-      "sha256": "e7b694b4587475af7bf16e6732b2785cb472f0456f1deb5a28c65f9e57499769"
+      "bytes": 6416,
+      "sha256": "0b2ad12e66ef8fd416b5d6020d1b61fcd089830182d85ad5ffbf289ab97ec859"
     },
     {
       "path": "assets/excavator-preview.png",
@@ -38,22 +38,22 @@
     {
       "path": "assets/mountains/altai-heights.f32",
       "bytes": 481636,
-      "sha256": "80c2cd0d7f1ed46fb2783c78c489fb54cd4cd1e513e9599439f0cc925a05220f"
+      "sha256": "f5fbebcf415b490c5440d3b44d950b9c989375518afd11d7df31aaf5140a0596"
     },
     {
       "path": "assets/mountains/altai-landscape.glb",
-      "bytes": 7584968,
-      "sha256": "187767b8417322fd130787d39fb6468625d17a6d74ac8afb111276a5b05d691c"
+      "bytes": 7584964,
+      "sha256": "fc18669c41008f6addd4744a96a208355de61215da8a356818f6fda63b1a51e2"
     },
     {
       "path": "assets/mountains/altai-profile.json",
-      "bytes": 743532,
-      "sha256": "bbde48960e300f97383eabc7ec8c72ef0369cdb9758c5d2dbc8c0f720a03b971"
+      "bytes": 757975,
+      "sha256": "287acd53059e663d5d2a42531f70e7248222e2cc2405539b660b2ca1e6f40f76"
     },
     {
       "path": "assets/mountains/altai-report.json",
-      "bytes": 189,
-      "sha256": "18ad9f5344969ce41a2602ddf6493dec6561e7af8d5ea5921ad280aee3badf6a"
+      "bytes": 237,
+      "sha256": "efe6be248878a0471b5991ee25d3578e8ddc0afcbf2f4fc88d3193cc2641efef"
     },
     {
       "path": "assets/mountains/botany.glb",
@@ -73,22 +73,22 @@
     {
       "path": "assets/mountains/quarry-heights.f32",
       "bytes": 481636,
-      "sha256": "6c763b0ca4282cbff21c8ccf478e659ba09fb50bf7eba4d593bf35572590222d"
+      "sha256": "c339b2ef1cf7b9e0f38e937831fcea06b07b30ab3e057b4d9abf6983cd212688"
     },
     {
       "path": "assets/mountains/quarry-landscape.glb",
       "bytes": 7584968,
-      "sha256": "ae44d73f10ac8966d92901311af858c8b737d39aeb7f39fa6c95c60e3ffa6bd3"
+      "sha256": "086209c7a2c3babd8370b2b95558257bb9e9c1eccf5d1c42f00cd92f907840f7"
     },
     {
       "path": "assets/mountains/quarry-profile.json",
-      "bytes": 581256,
-      "sha256": "61261ca5e4f266cca448a1d5d169d65fb8420d8b129f38a83aea9eeecc1e6b17"
+      "bytes": 600615,
+      "sha256": "8a349ca59452991eb690ccf2a316161958c7a17d7e32ef7163aa73fb28db5529"
     },
     {
       "path": "assets/mountains/quarry-report.json",
-      "bytes": 190,
-      "sha256": "5c3cc61f67729896297697a360437413e9b57c08d669cb82778f595f73eab2d0"
+      "bytes": 244,
+      "sha256": "e7672b4606fbf028b10d78d6b125bf3f805e1128276f0d19ec1ee25e2146e5f2"
     },
     {
       "path": "assets/quarry-preview.png",
@@ -197,8 +197,8 @@
     },
     {
       "path": "career-view.js",
-      "bytes": 22078,
-      "sha256": "e3fa5838b8e396ea49f539e6b9c4e42059e292f295b2c30f54a1706dcf471e28"
+      "bytes": 22741,
+      "sha256": "aee477326ea8dcbe4d7cf742868db544c450fe94eb458230f3dc4a8e0beb79f5"
     },
     {
       "path": "career.css",
@@ -207,8 +207,8 @@
     },
     {
       "path": "career.html",
-      "bytes": 6389,
-      "sha256": "4e0754436730e9296fa54986fd1fe4c059670a770f2ccabb180a9ea187707e9a"
+      "bytes": 6390,
+      "sha256": "e54dcf663e5a08440ba8a612e813e7510842f0b0abc74e4ab60c27b715e73c3f"
     },
     {
       "path": "dispatch-core.mjs",
@@ -322,8 +322,13 @@
     },
     {
       "path": "mountain-landscape.mjs",
-      "bytes": 13973,
-      "sha256": "fbfbaaedf0f8f92ac772354fa40868634ba3983fbcccb54e610189a683e5c9ed"
+      "bytes": 14898,
+      "sha256": "d7bc6a4ec30139effbace19756cab10a0de51c29b8f779121cacc78a71a85da6"
+    },
+    {
+      "path": "mountain-watercourse.mjs",
+      "bytes": 4975,
+      "sha256": "cfe090a3676c2d14868435148f7c05a736d90783b4e574fbb2e5764cb5b626d6"
     },
     {
       "path": "orange-white.css",

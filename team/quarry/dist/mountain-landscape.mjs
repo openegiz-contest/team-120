@@ -1,3 +1,4 @@
+import {createMountainWatercourse} from './mountain-watercourse.mjs?v=relief-2';
 // Blender-authored scenery. The working quarry, road graph and saves stay independent.
 export function createMountainSampler(profile, heights) {
   const {xs,zs}=profile;
@@ -12,15 +13,20 @@ export function createMountainSampler(profile, heights) {
 }
 
 export function mountainOverview(aspect) {
-  const target=[-70,320,-190],scale=aspect<1?1.02/Math.max(.65,aspect):1;
-  return {target,position:[760*scale,320+565*scale,1030*scale],fov:49};
+  const target=[-90,410,-160],scale=aspect<1?1.02/Math.max(.65,aspect):1;
+  return {target,position:[900*scale,410+670*scale,1280*scale],fov:52};
+}
+
+export function mountainSceneryView(aspect) {
+  const scale=aspect<1?1/Math.max(.75,aspect):1;
+  return {target:[-600,370,200],position:[-600-850*scale,370+680*scale,200+1680*scale],fov:56};
 }
 
 export async function loadMountainLandscape({THREE,scene,world,renderer,loader,kind,surfaces,route}) {
   const base='./assets/mountains/',id=kind==='altai'?'altai':'quarry';
-  const response=await fetch(base+id+'-profile.json');if(!response.ok)throw new Error('Mountain profile '+response.status);
+  const response=await fetch(base+id+'-profile.json?v=relief-2');if(!response.ok)throw new Error('Mountain profile '+response.status);
   const profile=await response.json();
-  const [land,botany,heightResponse]=await Promise.all([loader.loadAsync(base+id+'-landscape.glb'),loader.loadAsync(base+'botany.glb'),fetch(base+profile.heightFile)]);
+  const [land,botany,heightResponse]=await Promise.all([loader.loadAsync(base+id+'-landscape.glb?v=relief-2'),loader.loadAsync(base+'botany.glb'),fetch(base+profile.heightFile+'?v=relief-2')]);
   if(!heightResponse.ok)throw new Error('Mountain elevations '+heightResponse.status);
   const heights=new Float32Array(await heightResponse.arrayBuffer()),heightAt=createMountainSampler(profile,heights);
   const group=new THREE.Group();group.name='BLENDER / mountain landscape';scene.add(group);group.add(land.scene);
@@ -41,6 +47,10 @@ export async function loadMountainLandscape({THREE,scene,world,renderer,loader,k
       float soil=dot(texture2D(gravelMap,vMountainP.xz/19.).rgb,vec3(.299,.587,.114));
       float steep=1.-smoothstep(.55,.9,abs(vMountainN.y));
       diffuseColor.rgb*=mix(.18+soil*.53,.20+detail*.85,steep);
+      float warp=texture2D(strataMap,vMountainP.xz/380.).g*8.;
+      float joints=pow(.5+.5*sin(vMountainP.x*.135+vMountainP.z*.073+sin(vMountainP.y*.019)*.8+warp),16.);
+      float beds=pow(.5+.5*sin(vMountainP.y*.19+sin(vMountainP.x*.012)*1.4+cos(vMountainP.z*.016)+warp*.4),18.);
+      diffuseColor.rgb*=1.-steep*(joints*.17+beds*.06);
     `);
     shader.fragmentShader=shader.fragmentShader.replace('uniform sampler2D gravelMap;','uniform sampler2D gravelMap;uniform sampler2D soilRoughness;uniform sampler2D strataNormal;uniform vec3 lipTint;').replace('#include <color_fragment>',`
       #include <color_fragment>
@@ -49,6 +59,8 @@ export async function loadMountainLandscape({THREE,scene,world,renderer,loader,k
       float soilPatch=sin(vMountainP.x*.017+sin(vMountainP.z*.022)*2.)*sin(vMountainP.z*.013-vMountainP.x*.009);
       vec3 rim=texture2D(gravelMap,vMountainP.xz/16.).rgb*(.88+(mottling-.88)*2.+soilPatch*.13);
       diffuseColor.rgb=mix(rim*lipTint,diffuseColor.rgb,smoothstep(3.,170.,lip));
+      float cliffFace=1.-smoothstep(.30,.72,abs(vMountainN.y));
+      diffuseColor.rgb*=mix(vec3(1.),vec3(.48,.56,.60),cliffFace*.8*smoothstep(30.,170.,lip));
     `);
     shader.fragmentShader=shader.fragmentShader.replace('#include <normal_fragment_maps>',`
       vec2 nx=texture2D(strataNormal,p.yz).xy*2.-1.,ny=texture2D(strataNormal,p.xz).xy*2.-1.,nz=texture2D(strataNormal,p.xy).xy*2.-1.;
@@ -56,7 +68,7 @@ export async function loadMountainLandscape({THREE,scene,world,renderer,loader,k
       vec3 baseNormal=normalize(vMountainN);detailNormal-=baseNormal*dot(baseNormal,detailNormal);
       normal=normalize(normal+mat3(viewMatrix)*detailNormal*steep*1.1);
     `);
-  };terrainMaterial.customProgramCacheKey=()=> 'blender-mountain-triplanar-v1';ground.material=terrainMaterial;
+  };terrainMaterial.customProgramCacheKey=()=> 'blender-mountain-triplanar-v2';ground.material=terrainMaterial;
   const road=land.scene.getObjectByName('ValleyAccessRoad');road.material=new THREE.MeshStandardMaterial({color:0xc4b28f,map:surfaces.road.albedo,normalMap:surfaces.road.normal,normalScale:new THREE.Vector2(.4,.4),roughness:1,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1});road.receiveShadow=true;
   const dummy=new THREE.Object3D(),colour=new THREE.Color();
   function instances(name,geometry,material,rows,scale=[1,1,1],raise=0,tint=false) {
@@ -98,6 +110,7 @@ export async function loadMountainLandscape({THREE,scene,world,renderer,loader,k
   world.traverse(o=>{if(o.isMesh){o.receiveShadow=true;o.castShadow=true}});
   scene.traverse(o=>{if(o.isDirectionalLight&&o.position.x<0){o.castShadow=true;o.shadow.mapSize.set(2048,2048);Object.assign(o.shadow.camera,{left:-850,right:850,top:850,bottom:-850,near:20,far:4200});o.shadow.normalBias=1.2;o.shadow.bias=-.00015;o.shadow.camera.updateProjectionMatrix()}});
   if(id==='quarry'){scene.background=new THREE.Color(0xbdccd0);scene.fog=new THREE.FogExp2(0xbdccd0,.00011);scene.traverse(o=>{if(o.isHemisphereLight){o.intensity=1.55;o.color.set(0xd7e8f1);o.groundColor.set(0x6f7054)}else if(o.isDirectionalLight)o.intensity=o.position.x<0?2.4:.45});renderer.toneMappingExposure=1.03}
+  const watercourse=createMountainWatercourse(THREE,group,profile,heightAt,id==='altai');
   scene.updateMatrixWorld(true);
-  return {group,profile,heightAt,contain(camera,controls){const target=controls.target,next=target.clone();next.x=Math.max(-610,Math.min(610,next.x));next.z=Math.max(-530,Math.min(530,next.z));next.y=Math.max(0,Math.min(400,next.y));camera.position.add(next.clone().sub(target));target.copy(next)},guardCamera(camera){const y=heightAt(camera.position.x,camera.position.z);if(y!==null&&camera.position.y<y+24){camera.position.y=y+24;camera.updateMatrixWorld()}},update(time,camera){waterTime.value=time*.001;grasses.visible=camera.position.y<2100;shades.visible=camera.position.y<2100}};
+  return {group,profile,heightAt,contain(camera,controls){const target=controls.target,next=target.clone();next.x=Math.max(-610,Math.min(610,next.x));next.z=Math.max(-530,Math.min(530,next.z));next.y=Math.max(0,Math.min(400,next.y));camera.position.add(next.clone().sub(target));target.copy(next)},guardCamera(camera){const y=heightAt(camera.position.x,camera.position.z);if(y!==null&&camera.position.y<y+24){camera.position.y=y+24;camera.updateMatrixWorld()}},update(time,camera){waterTime.value=time*.001;watercourse?.update(time);grasses.visible=camera.position.y<2100;shades.visible=camera.position.y<2100}};
 }
