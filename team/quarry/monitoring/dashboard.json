@@ -1,0 +1,1093 @@
+{
+  "uid": "quarry-control",
+  "title": "QUARRY · Диспетчерская — контрольная смена",
+  "tags": [
+    "QUARRY",
+    "team-120",
+    "simulation"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "refresh": "5s",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "description": "Independent live server control runs of team-120 dispatch-core. No browser-player or production telemetry.",
+  "templating": {
+    "list": [
+      {
+        "name": "scenario",
+        "label": "Сценарий",
+        "type": "custom",
+        "query": "baseline,speed24,speed48,delay60",
+        "current": {
+          "text": "baseline",
+          "value": "baseline"
+        },
+        "options": [
+          {
+            "text": "baseline",
+            "value": "baseline",
+            "selected": true
+          },
+          {
+            "text": "speed24",
+            "value": "speed24",
+            "selected": false
+          },
+          {
+            "text": "speed48",
+            "value": "speed48",
+            "selected": false
+          },
+          {
+            "text": "delay60",
+            "value": "delay60",
+            "selected": false
+          }
+        ],
+        "multi": false,
+        "includeAll": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Источник данных",
+      "type": "text",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 3
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "### QUARRY · Контрольная смена\n**Живой серверный запуск нашей модели, не телеметрия текущей вкладки игрока.** Тот же граф и FSM, 4 самосвала × 100 т, план 500 т, смена 300 с. После завершения — пауза 15 с и новый цикл. MQTT / Ditto пока не подключены. [Открыть 3D-диспетчерскую](/dispatch.html?mode=classic)"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Доставлено, т",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_tonnes{scenario=~\"$scenario\"}",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "mass:tonnes",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 3,
+      "title": "План выполнен",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_plan_percent{scenario=~\"$scenario\"}",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Остаток топлива, л",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_fuel_litres{scenario=~\"$scenario\"}",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "litre",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 5,
+      "title": "До конца смены",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 3,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_remaining_seconds{scenario=~\"$scenario\"}",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Доставка руды по времени",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_tonnes{scenario=~\"$scenario\"}",
+          "legendFormat": "{{scenario}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Расход топлива в текущей смене, л",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 7,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_fuel_used_litres{scenario=~\"$scenario\"}",
+          "legendFormat": "{{scenario}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "litre",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Состояния самосвалов",
+      "type": "state-timeline",
+      "gridPos": {
+        "x": 0,
+        "y": 15,
+        "w": 24,
+        "h": 7
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_truck_state{scenario=~\"$scenario\"}",
+          "legendFormat": "{{truck}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "Готов",
+                  "color": "#6b7280"
+                },
+                "1": {
+                  "text": "Пустой → вниз",
+                  "color": "#5794F2"
+                },
+                "2": {
+                  "text": "Погрузка",
+                  "color": "#FF9830"
+                },
+                "3": {
+                  "text": "С рудой → вверх",
+                  "color": "#73BF69"
+                },
+                "4": {
+                  "text": "Разгрузка",
+                  "color": "#B877D9"
+                },
+                "5": {
+                  "text": "Ожидание",
+                  "color": "#F2495C"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "showValue": "auto",
+        "mergeValues": true,
+        "rowHeight": 0.8,
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "Температура тормозов",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_truck_brake_temperature_celsius{scenario=~\"$scenario\"}",
+          "legendFormat": "{{truck}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Накопленное ожидание самосвалов",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_truck_waiting_seconds{scenario=~\"$scenario\"}",
+          "legendFormat": "{{truck}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 11,
+      "title": "Скорость по транспортной модели",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 30,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_truck_speed_kmh{scenario=~\"$scenario\"}",
+          "legendFormat": "{{truck}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "velocitykmh",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Занятые рёбра дороги / ожидающие машины",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 30,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_occupied_edges{scenario=~\"$scenario\"}",
+          "legendFormat": "Занятые рёбра",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "quarry_shift_waiting_trucks{scenario=~\"$scenario\"}",
+          "legendFormat": "Ожидающие машины",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 13,
+      "title": "Сравнение: доставка руды во всех сценариях",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 38,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_tonnes",
+          "legendFormat": "{{scenario}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 14,
+      "title": "Контрольный расчёт: итоговый тоннаж",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 12,
+        "y": 38,
+        "w": 12,
+        "h": 8
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_reference_tonnes",
+          "legendFormat": "{{scenario}}",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "displayMode": "gradient",
+        "orientation": "horizontal"
+      }
+    },
+    {
+      "id": 15,
+      "title": "Свежесть данных, с",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 46,
+        "w": 8,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "time()-quarry_exporter_last_tick_seconds",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 16,
+      "title": "Аварийные остановки",
+      "type": "stat",
+      "gridPos": {
+        "x": 8,
+        "y": 46,
+        "w": 8,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_emergency_stops{scenario=~\"$scenario\"}",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 17,
+      "title": "Номер текущей смены",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 46,
+        "w": 8,
+        "h": 4
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "quarry-prometheus"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "quarry_shift_cycle{scenario=~\"$scenario\"}",
+          "legendFormat": "",
+          "range": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "quarry-prometheus"
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    }
+  ],
+  "links": [
+    {
+      "title": "Открыть карьер",
+      "url": "https://openegiz.ecoout.com.kz/",
+      "targetBlank": true
+    }
+  ]
+}
