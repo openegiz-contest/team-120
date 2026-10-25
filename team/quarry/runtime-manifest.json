@@ -12,8 +12,8 @@
     },
     {
       "path": "altai.html",
-      "bytes": 6416,
-      "sha256": "0b2ad12e66ef8fd416b5d6020d1b61fcd089830182d85ad5ffbf289ab97ec859"
+      "bytes": 6415,
+      "sha256": "1ef0f71f46fe5e187e9d0b19ee0564aa7b45f59c16b1ce5c6711684fd8994b2c"
     },
     {
       "path": "assets/excavator-preview.png",
@@ -126,6 +126,56 @@
       "sha256": "85e8f62c74e16f0c852afe7ad54d85a60f969d2a836def7b53d3715b2623b6df"
     },
     {
+      "path": "assets/rudny/sarbay-design.json",
+      "bytes": 5919,
+      "sha256": "48d552d857dea389edef1042bb029cf8ac2310ecc980feb1da30f74d08a6ff58"
+    },
+    {
+      "path": "assets/rudny/sarbay-heights.f32",
+      "bytes": 131044,
+      "sha256": "8e40d1eedeee511183e4605b3c88f2241e28d87717ef41dff7790fda5ee5a666"
+    },
+    {
+      "path": "assets/rudny/sarbay-profile.json",
+      "bytes": 2750,
+      "sha256": "955cc7dc92e13dc6ab10d0f83d89e9fd3a362058aee84432d71d474d0bdec574"
+    },
+    {
+      "path": "assets/rudny/sarbay-route.json",
+      "bytes": 75457,
+      "sha256": "b56de72a843d240312faf5f23157c8c97cd11b8c7a3fa790aeb4dd39f3820679"
+    },
+    {
+      "path": "assets/rudny/sarbay-terrain.glb",
+      "bytes": 4608012,
+      "sha256": "22f7c398a420a3178e51a2f8d539df3f14b54c3be2238a1cb87032f5e50c22b5"
+    },
+    {
+      "path": "assets/rudny/sokolov-design.json",
+      "bytes": 5904,
+      "sha256": "09890b6a41edc420dd75b661cf98bdb64ca2ebd704445933e1ee2a1d32d349b7"
+    },
+    {
+      "path": "assets/rudny/sokolov-heights.f32",
+      "bytes": 131044,
+      "sha256": "207b5887533df7d975d35cda6b76ff2fa0b17b6e561886ab59c4ce7607854882"
+    },
+    {
+      "path": "assets/rudny/sokolov-profile.json",
+      "bytes": 2752,
+      "sha256": "3b051386e0c1f458d0842665c5279e4ee5e2a785138e5050525ff064f6b0f1bc"
+    },
+    {
+      "path": "assets/rudny/sokolov-route.json",
+      "bytes": 77376,
+      "sha256": "034a6812df56d37955cbd4a5280ee7c49e2a3197c35feb65362646913b35648c"
+    },
+    {
+      "path": "assets/rudny/sokolov-terrain.glb",
+      "bytes": 4783056,
+      "sha256": "6a2bafb92527cb4627044311da162f930ef5e6a0f82839bde619a76466a90493"
+    },
+    {
       "path": "assets/surfaces/gravel-albedo.png",
       "bytes": 1018284,
       "sha256": "7404a02f3aae9c0bac1a1824f05d8a335ab561ee91b4c01bf67405c8289933e4"
@@ -197,8 +247,8 @@
     },
     {
       "path": "career-view.js",
-      "bytes": 22741,
-      "sha256": "aee477326ea8dcbe4d7cf742868db544c450fe94eb458230f3dc4a8e0beb79f5"
+      "bytes": 23833,
+      "sha256": "b76e63123319cd45fc8a74c084c8220528c3003c9c871bc8327ed07679957bbc"
     },
     {
       "path": "career.css",
@@ -207,8 +257,8 @@
     },
     {
       "path": "career.html",
-      "bytes": 6390,
-      "sha256": "e54dcf663e5a08440ba8a612e813e7510842f0b0abc74e4ab60c27b715e73c3f"
+      "bytes": 6389,
+      "sha256": "39023c96e953eb028ff341ff3457ec28a8f50a16873a2f6744ad86fb271a6bd2"
     },
     {
       "path": "dispatch-core.mjs",
@@ -342,13 +392,13 @@
     },
     {
       "path": "quarry-maps.css",
-      "bytes": 5406,
-      "sha256": "e1ccceb5432c1636dda25849d2eb7374fac3343910ce1b938647f997f8027c14"
+      "bytes": 6569,
+      "sha256": "e02ca0528b9b1b1b1e78a39c74cf056589fd76d763db5f5c47804a24f0394077"
     },
     {
       "path": "quarry-maps.mjs",
-      "bytes": 1738,
-      "sha256": "965dba2e148ae149283d18bd5a866192606e016ccc3cf02db10402406ae92dce"
+      "bytes": 2779,
+      "sha256": "a5cd54a75b60b5a4fb53326da134aec99772eb9868724f41250bf30e0957affd"
     },
     {
       "path": "quarry-materials.mjs",
@@ -361,9 +411,24 @@
       "sha256": "73a7a8563cb12c0fa98cc1a5d2cde8e64fffdc16ad478ca60fd734dc9ad6f348"
     },
     {
+      "path": "rudny-maps.mjs",
+      "bytes": 7349,
+      "sha256": "8349cf06db9c2ed8e6828ca3715ad5129d4de52bff76a8e5338c36bd59194193"
+    },
+    {
       "path": "running-gear.mjs",
       "bytes": 5900,
       "sha256": "fb2a76869e09cde136bd99527556077c24985d8cee1549d222cde3f05d172f3d"
+    },
+    {
+      "path": "sarbay.html",
+      "bytes": 6390,
+      "sha256": "cc750af9df1a57a79d680c767c3a3faa7ba740b347024cdce77c48ed13c4012c"
+    },
+    {
+      "path": "sokolov.html",
+      "bytes": 6392,
+      "sha256": "97898edfc5f10f52c697d4e4a9cae1d770786c53ad7197c9a0fe374618390c6e"
     },
     {
       "path": "stockpile-colliders.mjs",

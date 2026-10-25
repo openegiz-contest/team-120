@@ -28,3 +28,6 @@ build/WebGL Build.loader.js
 build/WebGL Build.framework.js
 build/WebGL Build.data
 build/WebGL Build.wasm
+
+# Rebuildable intermediate meshes; exported Rudny GLBs are tracked in dist/assets.
+team/quarry/model-source/terrain/

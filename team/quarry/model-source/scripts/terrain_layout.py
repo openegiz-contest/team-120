@@ -2,7 +2,7 @@
 Run with .terrain-env/bin/python. No movement, routing AI or game state.
 """
 from pathlib import Path
-import json, math, csv
+import json, math, csv, os
 import numpy as np
 from scipy.interpolate import CubicSpline
 from scipy.spatial import cKDTree
@@ -10,11 +10,18 @@ from shapely.geometry import Polygon, LineString, MultiLineString
 from shapely.ops import unary_union
 import shapely, triangle
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'terrain';OUT.mkdir(exist_ok=True)
+VARIANT=os.environ.get('QUARRY_TERRAIN_VARIANT','')
+if VARIANT:
+    from rudny_blueprints import BLUEPRINTS, outline_factor, baseline as rudny_baseline
+    if VARIANT not in BLUEPRINTS:raise ValueError('Unknown terrain variant: '+VARIANT)
+    OUT=OUT/VARIANT;OUT.mkdir(exist_ok=True)
 RX,RY,CY,TOP,BASE=430.,330.,-20.,168.,-28.
-def shape(t):return 1+.025*np.sin(3*t+.3)+.014*np.sin(7*t)+.008*np.sin(13*t+1)
+if VARIANT:RX,RY=BLUEPRINTS[VARIANT]['rx'],BLUEPRINTS[VARIANT]['ry']
+def shape(t):return outline_factor(t,VARIANT) if VARIANT else 1+.025*np.sin(3*t+.3)+.014*np.sin(7*t)+.008*np.sin(13*t+1)
 def xy(r,t):return np.stack([r*RX*shape(t)*np.cos(t),CY+r*RY*shape(t)*np.sin(t)],axis=-1)
 def smooth(x):x=np.clip(x,0,1);return x*x*(3-2*x)
-t=np.linspace(0,1,1401);angle=.12+1.85*2*np.pi*t
+t=np.linspace(0,1,1401);angle=.12+(BLUEPRINTS[VARIANT]['turns'] if VARIANT else 1.85)*2*np.pi*t
+if VARIANT:angle+=BLUEPRINTS[VARIANT]['inner_phase']*smooth(t/.35)
 original=xy(1.06-.82*t,angle);delta=np.gradient(original,axis=0)
 norm=np.stack([-delta[:,1],delta[:,0]],axis=1);norm/=np.linalg.norm(norm,axis=1)[:,None]
 shifted=original-4.4*norm
@@ -52,6 +59,7 @@ def nearest(points):
     signed=np.sum((points-foot)*np.stack([-tangent[:,1],tangent[:,0]],axis=1),axis=1)
     station=s[seg]+f*(s[seg+1]-s[seg]);return station,signed
 def baseline(points):
+    if VARIANT:return rudny_baseline(points,VARIANT)
     theta=np.arctan2((points[:,1]-CY)/RY,points[:,0]/RX)
     r=np.sqrt((points[:,0]/RX)**2+((points[:,1]-CY)/RY)**2)/shape(theta)
     q=np.clip((r*r-.24**2)/(1.015**2-.24**2)*7,0,7)
@@ -68,14 +76,19 @@ def surface_z(points):
     z[inside]=rz[inside]+berm[inside]
     return z
 lines=[]
+if VARIANT:
+    # Keep the established mine mouth level and sampled densely on the two new maps.
+    for px in np.arange(15,66,5):lines.append(LineString([(px,70),(px,170)]))
+    for py in np.arange(70,171,5):lines.append(LineString([(15,py),(65,py)]))
 # All longitudinal edges and cross sections are hard triangulation constraints.
 for j in range(grid.shape[1]):lines.append(LineString(grid[:,j]))
 for row in grid:lines.append(LineString(row))
 lines.extend([LineString(transition_right),LineString(transition_left)])
 theta=np.linspace(0,2*np.pi,385)
-for k in range(7):
+bench_count=BLUEPRINTS[VARIANT]['benches'] if VARIANT else 7
+for k in range(bench_count):
     for q in [k+.78,k+1]:
-        radius=math.sqrt(.24**2+q/7*(1.015**2-.24**2))
+        radius=math.sqrt(.24**2+q/bench_count*(1.015**2-.24**2))
         clipped=LineString(xy(radius,theta)).difference(transition_area)
         if not clipped.is_empty:lines.append(clipped)
 # The original crusher access remains on level plateau and joins the broad entrance.
@@ -164,4 +177,7 @@ for i,c in enumerate(bay_stations):
     bays.append({'id':f'BAY_{i+1:02d}','station_m':float(c),'clear_width_m':19,'full_width_length_m':55,'taper_each_end_m':30,'boundary_blender_m':points})
 report={'road_length_m':float(L),'lane_clear_width_m':9,'max_grade_percent':float(np.abs(grade).max()*100),'minimum_centerline_radius_m':float(1/curvature[3:-3].max()),'passing_bays':bays,'top_elevation_m':168,'floor_elevation_m':0,'bench_height_m':24,'bench_intervals':7,'floor_clear_rectangle_blender_m':[[-90,-65,0],[50,45,0]],'crusher_platform_blender_m':[[10,321,168],[320,409,168]],'continuous_surface':True,'game_logic':False,'triangles':len(faces),'surface_triangles':len(F),'construction':'Single constrained terrain mesh; road and earth safety berms share vertex indices with terrain.'}
 (OUT/'terrain_design.json').write_text(json.dumps(report,indent=2))
+if VARIANT:
+    report.update(map_id=VARIANT,bench_intervals=bench_count,bench_height_m=168/bench_count,artistic_interpretation=True)
+    (OUT/'terrain_design.json').write_text(json.dumps(report,indent=2))
 print(json.dumps({k:v for k,v in report.items() if k!='passing_bays'}),flush=True)
