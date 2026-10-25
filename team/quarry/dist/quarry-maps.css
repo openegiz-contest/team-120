@@ -1,0 +1,32 @@
+.map-switcher{position:relative;margin-left:16px;font-size:12px;z-index:30}.map-switcher summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:11px 13px;border:1px solid #ffffff30;border-radius:8px;background:#ffffff08}.map-switcher summary::-webkit-details-marker{display:none}.map-switcher summary i{font-style:normal;margin-left:6px;color:#9bb8b4}.map-switcher nav{position:absolute;top:calc(100% + 12px);left:0;width:290px;padding:8px;background:#102a2d;border:1px solid #45605e;border-radius:12px;box-shadow:0 15px 45px #0006;color:#dbe9df}.map-switcher a{display:block;padding:14px;color:inherit;text-decoration:none;border-radius:7px;border:1px solid transparent}.map-switcher a:hover{background:#ffffff0c}.map-switcher a[aria-current]{background:#284b43;border-color:#62856e}.map-switcher b{font-size:16px;font-weight:500}.map-switcher a span{float:right;font-size:10px;margin-top:4px;color:#d6b77d}.map-switcher small{display:block;font-size:10px;color:#9fb6ac;margin-top:7px}.map-switcher nav p{font-size:10px;margin:12px;color:#8fa6a3}.map-switcher summary:focus-visible{outline:3px solid #d6b77d;outline-offset:3px}
+body[data-quarry-map=altai]{--paper:#0d1c23;--ink:#e0e9de;--green:#467568;--muted:#8ca49e;--line:#304447;--orange:#d6ab67;color-scheme:dark}
+body[data-quarry-map=altai] header{background:#0b1d27;border-bottom:1px solid #304344}
+body[data-quarry-map=altai] .world{background:#0b1725}
+body[data-quarry-map=altai] .control{background:#12262b}
+body[data-quarry-map=altai] button{background:#20383b;color:#e1e9dd;border-color:#405450}
+body[data-quarry-map=altai] .world-title{padding:12px 16px;border-left:2px solid #c5a16b;background:linear-gradient(90deg,#0b1e29d9,#0b1e2900);max-width:430px}
+body[data-quarry-map=altai] .world-title>span{color:#b9cbbd;letter-spacing:2px}
+body[data-quarry-map=altai] .world-title h1{font-size:36px;color:#edf2e5;max-width:360px;line-height:1.08;margin-top:10px}
+body[data-quarry-map=altai] .world-title h1 small{display:block;font-size:12px;letter-spacing:3px;font-weight:400;color:#adc5c2;margin-top:12px}
+body[data-quarry-map=altai] .camera-buttons button,body[data-quarry-map=altai] .world-bottom>span,body[data-quarry-map=altai] .world-bottom button{background:#142c35dd;color:#dce9de;border-color:#58716d}
+body[data-quarry-map=altai] .guide>p,body[data-quarry-map=altai] .guide-note,body[data-quarry-map=altai] .shop-top p,body[data-quarry-map=altai] .shop-card small,body[data-quarry-map=altai] .save-status{color:#a1b8ac}
+body[data-quarry-map=altai] .guide-top span,body[data-quarry-map=altai] .section-title>span{color:#b4b99a}
+body[data-quarry-map=altai] .primary{color:#162b2d;background:#d6ab67;border-color:#d6ab67}
+body[data-quarry-map=altai] .primary:disabled,body[data-quarry-map=altai] .shop-card button:disabled{background:#24393a;color:#8b9d94;border-color:#3a514a}
+body[data-quarry-map=altai] .truck-row,body[data-quarry-map=altai] .shop-card{background:#1b3335;border-color:#3c5350}
+body[data-quarry-map=altai] .truck-row b,body[data-quarry-map=altai] .truck-row small{color:#abc2b3}
+body[data-quarry-map=altai] .shop-card.highlight{background:#3b392c;border-color:#d6ab67}
+body[data-quarry-map=altai] .purchase-progress{background:#344b43}
+body[data-quarry-map=altai] .journey .active{color:#e2c18a}
+body[data-quarry-map=altai] .map-pin{background:#193b3fe8;color:#e8e6c8;border-color:#709486}
+body[data-quarry-map=altai] .map-pin.truck{background:#327f91;color:#fff;border-color:#a2c8c7}
+body[data-quarry-map=altai] #asset-loading,body[data-quarry-map=altai] #load-error{background:#0c202bf5}
+body[data-quarry-map=altai] dialog{background:#14292e;color:#e0e9de;border-color:#55746a}
+body[data-quarry-map=altai] dialog p,body[data-quarry-map=altai] dialog li{color:#adc2b3}
+body[data-quarry-map=altai] .manual-entry,body[data-quarry-map=altai] .manual-panel,body[data-quarry-map=altai] .manual-worksite,body[data-quarry-map=altai] .manual-rockfalls{background:#193035;color:#dce9de;border-color:#40564e}
+body[data-quarry-map=altai] .manual-entry p,body[data-quarry-map=altai] .manual-hint,body[data-quarry-map=altai] .manual-note,body[data-quarry-map=altai] .manual-worksite p,body[data-quarry-map=altai] .manual-worksite small{color:#a3b9ad}
+body[data-quarry-map=altai] .manual-camera button,body[data-quarry-map=altai] .driving-pad button,body[data-quarry-map=altai] .manual-look-hint{background:#1a333cdd;color:#e1e9dd;border-color:#69877a}
+body[data-quarry-map=altai] .manual-note,body[data-quarry-map=altai] .manual-worksite button{background:#223b3d}
+body[data-quarry-map=altai] .manual-tools p,body[data-quarry-map=altai] .manual-rockfalls small,body[data-quarry-map=altai] .manual-payload small,body[data-quarry-map=altai] .manual-payload>span,body[data-quarry-map=altai] .manual-telemetry>span{color:#adc2b3}
+@media(max-width:1100px){.map-switcher{margin-left:0}.map-switcher summary{font-size:10px;padding:10px 8px}}
+@media(max-width:760px){.map-switcher summary span{display:none}.map-switcher summary{padding:8px 10px}.map-switcher summary i{display:none}.map-switcher nav{position:fixed;top:60px;left:12px;right:12px;width:auto}body[data-quarry-map=altai] .world-title{top:14px;left:15px;padding:8px 11px}body[data-quarry-map=altai] .world-title h1{font-size:25px;max-width:220px}body[data-quarry-map=altai] .world-title h1 small{font-size:9px;letter-spacing:2px;margin-top:7px}}

@@ -1,0 +1,69 @@
+/* Shared interface palette; map lighting and materials are independent. */
+html body.quarry-white,html body.quarry-white[data-quarry-map=altai]{--paper:#fff;--ink:#282828;--green:#e9601c;--line:#e6e6e6;--muted:#777;--orange:#e9601c;color:#282828;background:#fff;color-scheme:light}
+html body.quarry-white>header,html body.quarry-white[data-quarry-map=altai]>header{background:#fff;color:#282828;border-bottom:1px solid #e6e6e6}
+html body.quarry-white .brand{color:#282828}
+html body.quarry-white .brand small{color:#888}
+html body.quarry-white .money,html body.quarry-white[data-quarry-map=altai] .money{background:#fff7f0;border-color:#ffe0c8;color:#282828}
+html body.quarry-white .money>span:last-child{color:#846b5a}
+html body.quarry-white .coin{color:#ed681f}
+html body.quarry-white #help{border-color:#e3e3e3;color:#777}
+html body.quarry-white .control,html body.quarry-white[data-quarry-map=altai] .control{background:#fff;color:#282828;border-color:#e6e6e6}
+html body.quarry-white .guide-top,html body.quarry-white .eyebrow,html body.quarry-white .guide-note,html body.quarry-white .manual-eyebrow{color:#9a603b}
+html body.quarry-white .guide p,html body.quarry-white .shop-top p,html body.quarry-white .shop-card small,html body.quarry-white .save-status,html body.quarry-white .manual-hint,html body.quarry-white .manual-joints,html body.quarry-white .manual-entry p{color:#777}
+html body.quarry-white .journey{color:#8b8b8b}
+html body.quarry-white .journey .active,html body.quarry-white .journey .done{color:#c94d0c}
+html body.quarry-white .primary,html body.quarry-white #manual-exit,html body.quarry-white .shop-card button:not(:disabled),html body.quarry-white[data-quarry-map=altai] .primary,html body.quarry-white[data-quarry-map=altai] #manual-exit{background:#e9601c;color:#fff;border-color:#e9601c}
+html body.quarry-white .primary:hover,html body.quarry-white #manual-exit:hover{background:#d85210}
+html body.quarry-white button:disabled{opacity:.5}
+html body.quarry-white .shop-card,html body.quarry-white .truck-row,html body.quarry-white .manual-entry,html body.quarry-white .manual-worksite,html body.quarry-white .manual-rockfalls,html body.quarry-white[data-quarry-map=altai] .shop-card,html body.quarry-white[data-quarry-map=altai] .truck-row{background:#fafafa;border-color:#e7e7e7;color:#282828}
+html body.quarry-white .truck-row.selected{background:#fff5eb;border-color:#ed681f}
+html body.quarry-white .purchase-progress{background:#eaeaea}
+html body.quarry-white .purchase-progress>div{background:#ed681f}
+html body.quarry-white .machine-icon{background:#fff0e4;color:#d85412}
+html body.quarry-white .camera-buttons button,html body.quarry-white .world-bottom button,html body.quarry-white .world-bottom>span,html body.quarry-white .manual-hud button,html body.quarry-white .manual-look-hint,html body.quarry-white[data-quarry-map=altai] .world-bottom>span,html body.quarry-white[data-quarry-map=altai] .camera-buttons button{background:#ffffffee;color:#333;border-color:#e1e1e1;box-shadow:0 2px 10px #00000005}
+html body.quarry-white .manual-camera button[aria-pressed=true],html body.quarry-white .manual-fleet button[aria-pressed=true],html body.quarry-white .manual-payload button[aria-pressed=true]{background:#e9601c;color:#fff;border-color:#e9601c}
+html body.quarry-white .manual-fleet button,html body.quarry-white .joint-controls button,html body.quarry-white .manual-payload button,html body.quarry-white .manual-entry button,html body.quarry-white .manual-rockfalls button,html body.quarry-white #manual-prepare{background:#fff;border-color:#e3e3e3;color:#333}
+html body.quarry-white .manual-entry button:first-child{background:#fff0e4;color:#bc4609;border-color:#ffdbbf}
+html body.quarry-white .manual-note{background:#fff6ee;color:#8a6a55}
+html body.quarry-white .manual-telemetry,html body.quarry-white .manual-payload{border-color:#e5e5e5}
+html body.quarry-white .manual-telemetry span,html body.quarry-white .manual-payload>span,html body.quarry-white .manual-payload small,html body.quarry-white .manual-worksite p,html body.quarry-white .manual-worksite small,html body.quarry-white .manual-rockfalls p,html body.quarry-white .manual-rockfalls small{color:#777}
+html body.quarry-white .driving-pad .pressed,html body.quarry-white .joint-controls .pressed{background:#e9601c;color:#fff;border-color:#e9601c}
+html body.quarry-white .map-pin{background:#fff;border-color:#dadada;color:#333}
+html body.quarry-white .map-pin.truck{background:#e9601c;border-color:#fff;color:#fff}
+html body.quarry-white .map-pin.selected{outline-color:#e9601c}
+html body.quarry-white #asset-loading,html body.quarry-white #load-error,html body.quarry-white[data-quarry-map=altai] #asset-loading{background:#fff;color:#282828}
+html body.quarry-white .loader-icon{color:#e9601c}
+html body.quarry-white dialog{background:#fff;color:#282828;border-color:#e6e6e6}
+html body.quarry-white .advanced-link{color:#b7470b}
+html body.quarry-white .map-switcher summary{border-color:#e3e3e3;background:#fafafa;color:#333}
+html body.quarry-white .map-switcher summary i{color:#e9601c}
+html body.quarry-white .map-switcher nav{background:#fff;border-color:#e6e6e6;color:#333;box-shadow:0 12px 32px #00000014}
+html body.quarry-white .map-switcher a[aria-current=page]{background:#fff2e8;border-color:#ffd7b9}
+html body.quarry-white .map-switcher a:hover{background:#fff7f0}
+html body.quarry-white .map-switcher small{color:#777}
+html body.quarry-white button:focus-visible,html body.quarry-white a:focus-visible{outline:2px solid #ed681f;outline-offset:3px}
+html body.quarry-white button{background-color:#fff;color:#333;border-color:#e3e3e3}
+html body.quarry-white .manual-panel{background:#fff;color:#282828}
+html body.quarry-white .primary:disabled,html body.quarry-white .shop-card button:disabled{background:#f4f4f4;border-color:#e4e4e4;color:#858585;opacity:1}
+html body.quarry-white .truck-row b,html body.quarry-white .truck-row small,html body.quarry-white .section-title>span,html body.quarry-white .guide-top span,html body.quarry-white .manual-tools p,html body.quarry-white dialog p,html body.quarry-white dialog li{color:#777}
+html body.quarry-white .shop-card.highlight{background:#fff5eb;border-color:#ed681f}
+html body.quarry-white .truck-row.selected{outline-color:#ed681f}
+html body.quarry-white .map-pin.loaded{background:#a6430d;color:#fff}
+html body.quarry-white .manual-impact-notice{background:#34302e;color:#fff}
+html body.quarry-white input[type=checkbox]{accent-color:#e9601c}
+html body.quarry-white .mine-entry{background:#fff5ec;border-color:#ffdfc5;color:#282828}
+html body.quarry-white .mine-entry>span,html body.quarry-white .mine-eyebrow{color:#a05d34}
+html body.quarry-white .mine-entry p,html body.quarry-white .mine-guide,html body.quarry-white .mine-destinations{color:#777}
+html body.quarry-white .mine-entry button,html body.quarry-white #mine-board,html body.quarry-white #mine-exit{background:#e9601c;border-color:#e9601c;color:#fff}
+html body.quarry-white.mine-active .control{background:#fff;color:#282828}
+html body.quarry-white .mine-readings{border-color:#e5e5e5}
+html body.quarry-white .mine-readings strong,html body.quarry-white #mine-status{color:#c44e0e}
+html body.quarry-white .mine-readings small,html body.quarry-white .mine-readings>span{color:#777}
+html body.quarry-white .mine-map{background:#fafafa;border-color:#e4e4e4}
+html body.quarry-white .mine-map path{stroke:#c5c5c5}
+html body.quarry-white .mine-map path.selected{stroke:#ed681f}
+html body.quarry-white .mine-map circle{fill:#ed681f;stroke:#fff}
+html body.quarry-white .mine-panel .mine-map text{fill:#777}
+html body.quarry-white .mine-panel button,html body.quarry-white .mine-hud button{background:#ffffffee;border-color:#dedede;color:#333}
+html body.quarry-white .mine-panel button[aria-pressed=true],html body.quarry-white .mine-view button[aria-pressed=true],html body.quarry-white .mine-pedals .pressed{background:#e9601c;border-color:#e9601c;color:#fff}
+html body.quarry-white #mine-location,html body.quarry-white .mine-portal-pin{background:#fff6eeed;border-color:#f5bc95;color:#9a430f}

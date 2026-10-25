@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Начните с одного экскаватора. Доставляйте руду, покупайте технику и развивайте собственный карьер.">
+  <title>QUARRY — С первого ковша</title>
+  <link rel="stylesheet" href="./welcome.css">
+  <link rel="stylesheet" href="./welcome-white.css?v=2">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+</head>
+<body class="welcome-white">
+  <a class="skip-link" href="#start">К содержимому</a>
+  <div id="site">
+    <header class="masthead">
+      <a class="wordmark" href="./welcome.html" aria-label="Quarry — главная"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 5h28M6 12h20M10 19h12M14 26h4"/></svg>QUARRY<span>СИМУЛЯТОР КАРЬЕРА</span></a>
+      <nav aria-label="Главная навигация"><a href="#how">Как это работает</a><a href="./index.html">Исследовать карьер <span>↗</span></a></nav>
+      <a class="header-play" href="./career.html">Войти в игру <span>↗</span></a>
+    </header>
+    <main id="start" tabindex="-1">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="contours" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="live-dot"></span> БОЛЬШАЯ РАБОТА НАЧИНАЕТСЯ С МАЛОГО</p>
+          <h1 id="hero-title">Всё начинается<br>с первого<br><em>ковша.</em></h1>
+          <p class="hero-description">Один экскаватор. Один самосвал.<br>И целый карьер возможностей.</p>
+          <div class="hero-actions"><a class="primary" href="./career.html">Начать свой карьер <span>↗</span></a><span class="action-note">Прямо в браузере<br>С пошаговым обучением</span></div>
+        </div>
+        <div class="machine-stage" id="machine-stage">
+          <div class="machine-number" aria-hidden="true">01</div>
+          <img class="machine-poster" id="machine-poster" src="./assets/excavator-preview.png" alt="Детальная модель оранжевого гусеничного экскаватора">
+          <div id="machine-canvas" aria-label="Вращающаяся 3D-модель карьерной техники"></div>
+          <div class="stage-coordinate" aria-hidden="true">ОБЪЕКТ / Q–01<br>48° N &nbsp; 68° E <small>КОНЦЕПТ</small></div>
+          <div class="model-caption"><span class="caption-line"></span><span id="model-name">Гидравлический экскаватор<small id="model-detail">Всё большое начинается с него.</small></span></div>
+          <span id="model-status" class="model-status" role="status">Подготавливаем технику…</span>
+          <div class="model-switch" role="group" aria-label="Выбор 3D-модели"><button data-model="excavator" aria-pressed="true">01 <span>Экскаватор</span></button><button data-model="truck" aria-pressed="false">02 <span>Самосвал</span></button><button id="model-motion" aria-pressed="true" aria-label="Остановить вращение модели">Ⅱ</button></div>
+        </div>
+        <div class="hero-bottom"><a href="#how" class="scroll-cue"><span>↓</span> ВНИЗ, К БОЛЬШИМ ВОЗМОЖНОСТЯМ</a><button id="replay" class="replay" hidden><span>↻</span> Посмотреть вступление</button><span class="edition">ИНТЕРАКТИВНЫЙ МИР / 001</span></div>
+      </section>
+      <section class="facts" aria-label="Параметры карьера"><div><strong>168<span>м</span></strong><p>В глубину.<br>От плато до рудного дна.</p></div><div><strong>7</strong><p>Ярусов.<br>Один непрерывный маршрут.</p></div><div><strong>2,99<span>км</span></strong><p>Серпантина.<br>Каждый рейс — шаг вперёд.</p></div><a href="./index.html">Заглянуть внутрь <br>3D-карьера <span>↗</span></a></section>
+      <section class="progression" id="how" aria-labelledby="how-title">
+        <div class="section-top"><p class="eyebrow">01 / ОТ ПЕРВОГО РЕЙСА К СВОЕМУ ПАРКУ</p><span>ЗАГРУЗИ. ДОСТАВЬ. ВЫРАСТИ.</span></div>
+        <div class="section-heading"><h2 id="how-title">Маленький старт.<br><em>Большие планы.</em></h2><p>Освойтесь без спешки. Мы покажем, как загрузить руду и заработать первые деньги. Дальше — ваше дело.</p></div>
+        <div class="steps">
+          <article><div class="step-top"><span>01</span><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M10 48h35l6-7H15zM20 39V25h19v14M35 25l12-15 23 6 8 25M70 39l8 8 8-10M47 10l22 9"/></svg></div><h3>Ваш первый рейс</h3><p>Экскаватор загружает руду. Самосвал поднимается к дробилке. Первая сотня — ваша.</p><span class="step-foot">1 ДОСТАВКА <b>+100 монет</b></span></article>
+          <article><div class="step-top"><span>02</span><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M8 15h48l8 22H17zM17 37h60V24H62M65 24v-9h12l7 15v7h-7M10 41h73"/><circle cx="26" cy="44" r="8"/><circle cx="69" cy="44" r="8"/></svg></div><h3>Вдвоём — быстрее</h3><p>Две доставки окупают второй самосвал. Пока один везёт руду, другой уже готовится к рейсу.</p><span class="step-foot">САМОСВАЛ <b>200 монет</b></span></article>
+          <article><div class="step-top"><span>03</span><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M5 49h80M10 39h22V22H10zM22 22L36 8l18 9 5 22M51 38l8 8 8-10M49 49h30M59 28l9-17 13 7 4 18"/></svg></div><h3>Набирайте обороты</h3><p>Ещё пять доставок — и второй экскаватор ваш. Два места загрузки и всего 4 секунды на кузов.</p><span class="step-foot">ЭКСКАВАТОР <b>500 монет</b></span></article>
+        </div>
+      </section>
+      <section class="closing"><span class="eyebrow">ВАША ПЕРВАЯ СМЕНА ЖДЁТ</span><h2>Под поверхностью —<br><em>ваше будущее.</em></h2><a class="primary" href="./career.html">Начать с первого рейса <span>↗</span></a><div class="closing-lines" aria-hidden="true"></div></section>
+    </main>
+    <footer><a class="footer-brand" href="#start">QUARRY</a><span>Индустриальный мир. Ваши решения.</span><a href="./index.html">3D-диорама ↗</a><a href="./dispatch.html?mode=classic">Режим диспетчера ↗</a></footer>
+  </div>
+  <div id="earth-intro" hidden data-phase="blank" role="dialog" aria-modal="true" aria-label="Вступление: первый ковш">
+    <div class="earth-fallback"></div><div id="intro-canvas"></div>
+    <div class="intro-brand">QUARRY <span>ПОД ПОВЕРХНОСТЬЮ — ВОЗМОЖНОСТИ</span></div>
+    <button id="skip-intro">Пропустить вступление <span>↗</span></button>
+    <div class="intro-bottom"><span id="intro-label">Расчищаем путь к большому делу</span><span id="intro-percent">00</span><div><i id="intro-progress"></i></div></div>
+  </div>
+  <script>
+    (()=>{const overlay=document.getElementById('earth-intro'),site=document.getElementById('site');let seen=false;try{seen=sessionStorage.getItem('quarry-intro-white-v1')==='1'}catch{}const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;window.quarryIntroRequested=!seen&&!reduced;window.quarryDismissIntro=()=>{overlay.hidden=true;site.inert=false;document.body.classList.remove('intro-active','intro-revealing');try{sessionStorage.setItem('quarry-intro-seen','1');sessionStorage.setItem('quarry-intro-white-v1','1')}catch{}};if(window.quarryIntroRequested){overlay.hidden=false;site.inert=true;document.body.classList.add('intro-active');document.getElementById('skip-intro').focus();window.quarryIntroWatchdog=setTimeout(window.quarryDismissIntro,15000)}document.getElementById('skip-intro').onclick=window.quarryDismissIntro;})();
+  </script>
+  <script type="module" src="./welcome.js?v=white-2"></script>
+</body>
+</html>

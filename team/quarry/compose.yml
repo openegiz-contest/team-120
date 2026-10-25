@@ -1,0 +1,21 @@
+name: team120-quarry
+services:
+  web:
+    image: python:3.12-alpine
+    working_dir: /app
+    command: ["python3", "serve.py", "--bind", "0.0.0.0", "--port", "8766"]
+    user: "65534:65534"
+    init: true
+    read_only: true
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./:/app:ro
+    ports:
+      - "127.0.0.1:${QUARRY_PORT:-8766}:8766"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8766/welcome.html', timeout=3).close()"]
+      interval: 5s
+      timeout: 4s
+      retries: 5

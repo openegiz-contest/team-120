@@ -1,43 +1,137 @@
-# <Team name>: a digital mine on OpenEgiz
+# QUARRY - интерактивный карьер и диспетчеризация
 
-> Team Repository of the contest “Digital Mine on OpenEgiz”. **Replace the contents of this file with the instructions for your Submission.** The AI Jury runs the Submission strictly by these instructions, from scratch, in the Judge Environment. Accepted languages: English, Kazakh, Russian.
+Проект команды `sss-omega` для конкурса «Цифровой рудник на OpenEgiz». Транспортная модель опирается на выбранные командой реальные объекты - Сарбайский и Соколовский карьеры ССГПО, г. Рудный. Сама сцена и численные параметры движения являются моделированием; это не геодезическая копия предприятия.
 
-> **Start with the Concept**, the first section of [SUBMISSION.md](SUBMISSION.md): the Team writes it before any code. What AI agents build from this Template without a Concept is the Default Solution, published on the [contest site](https://openegiz-contest.github.io/) as the low bar: a Submission that does not go beyond it gets low levels in the Rubric. AI agents read [AGENTS.md](AGENTS.md).
+## Готовая демонстрация - можно открыть сразу
 
-## Running
+**[https://openegiz.ecoout.com.kz/](https://openegiz.ecoout.com.kz/)** - действующая публичная версия, без установки и регистрации. На главной экскаватор въезжает слева, опускает ковш в белый пол; затем открывается сайт. Кнопка «Начать свой карьер» ведёт к обучению. Вступление можно пропустить или повторить.
 
-Requirements (Docker, `make`, Windows/WSL2 setup) are in [OPENEGIZ.md](OPENEGIZ.md) / [OPENEGIZ.ru.md](OPENEGIZ.ru.md).
+| Что посмотреть | Готовый адрес | Что видно |
+|---|---|---|
+| Главная | [Открыть сайт](https://openegiz.ecoout.com.kz/) | Вступление и вращающиеся модели техники |
+| Обучение и развитие | [Дневной карьер](https://openegiz.ecoout.com.kz/career.html) | Один самосвал, один экскаватор, рейсы, доход и покупка техники |
+| Диспетчерская | [Смена с ручным и автоматическим управлением](https://openegiz.ecoout.com.kz/dispatch.html?mode=classic) | Дорожный граф, 8 карманов, сигналы, команды, топливо и план смены |
+| Ночная карта | [Алтай](https://openegiz.ecoout.com.kz/altai.html) | Отдельная художественная карта, лес, горы, свет техники |
+| Модели | [3D-просмотрщик](https://openegiz.ecoout.com.kz/index.html) | Рельеф, дробилка, экскаватор, самосвал и скачивание GLB |
+
+Публичный домен служит удобной демонстрацией. Локальная копия ниже работает независимо от него и содержит те же 92 файла веб-сборки. Код наших функций находится в `team/quarry/`; Замысел, параметры, сценарии и ограничения описаны в [SUBMISSION.md](SUBMISSION.md).
+
+**Текущий статус OpenEgiz:** в репозитории сохранена платформа OpenEgiz v1.0.4. Наша WebGL-симуляция пока исполняется в браузере и не обменивается состояниями с MQTT/Eclipse Ditto. Отдельный запуск платформы не устраняет это ограничение. Не заявляем наличие готовой интеграции двойников.
+
+## Запуск с нуля: Ubuntu 24.04 / Linux
+
+Для веб-приложения нужны Git, Python 3.10+ и современный браузер с WebGL 2. На машине судьи Python 3 уже есть. Node, npm, Blender, ключи API, платные сервисы и аккаунты для работы сцены не нужны. Готовые модели, карты материалов, Three.js и Draco находятся в репозитории. Весь `dist/` занимает около 143 МиБ; каждый файл меньше 100 МиБ.
+
+Если Git или Python отсутствуют:
 
 ```bash
-sudo apt install -y make   # if make is missing (clean Ubuntu)
-make up            # the OpenEgiz platform
-make example-mine  # the Example Mine: twins, simulator, dashboard
+sudo apt-get update
+sudo apt-get install -y git python3
 ```
 
-Replace these commands with the commands of your Submission. The Submission must start by following these instructions without manual intervention (Rules, clause 6.4); downloading datasets and models and building are also listed here.
+Получите исходники. До заморозки репозиторий приватный: для клонирования требуется уже предоставленный доступ GitHub; пароль или токен в файлы проекта не записывается. Если репозиторий уже выдан и склонирован, перейдите в его корень и пропустите `git clone`.
 
-## What to open
+```bash
+git clone https://github.com/openegiz-contest/team-120.git
+cd team-120
+python3 team/quarry/serve.py --bind 127.0.0.1 --port 8766
+```
 
-- Grafana: the address and login are printed by `make up`.
-- <where to see the mine visualization, which dashboards>
+Сервер остаётся работать в текущем терминале. Откройте **http://127.0.0.1:8766/** в браузере на том же компьютере. Корень перенаправляет на `welcome.html`; дождитесь загрузки сцены. Для остановки нажмите `Ctrl+C` в терминале сервера. Установка зависимостей и сборка JavaScript не требуются.
 
-## Repository contents
+Если порт 8766 занят, запустите `python3 team/quarry/serve.py --port 8767` и открывайте http://127.0.0.1:8767/. URL всех остальных страниц меняется только номером порта.
+
+### Альтернатива: Docker Compose для веб-приложения
+
+При установленном Docker с Compose v2.20+ вместо Python-команды можно выполнить из корня репозитория:
+
+```bash
+docker compose -f team/quarry/compose.yml up -d --wait
+```
+
+Адрес тот же: http://127.0.0.1:8766/. Первый запуск скачивает официальный образ `python:3.12-alpine`. Порт публикуется только на `127.0.0.1`, файлы монтируются только для чтения. При занятом порте: `QUARRY_PORT=8767 docker compose -f team/quarry/compose.yml up -d --wait`.
+
+```bash
+docker compose -f team/quarry/compose.yml logs --tail=40 web
+docker compose -f team/quarry/compose.yml down
+```
+
+### Платформа OpenEgiz из конкурсного шаблона
+
+Это дополнительный запуск платформы, отдельный от нашей браузерной модели. Он нужен для просмотра исходной инфраструктуры OpenEgiz; созданные нами функции пока не публикуют в неё телеметрию.
+
+```bash
+sudo apt-get install -y make
+make up
+make ps
+make smoke
+```
+
+`make up` автоматически создаёт локальные пароли в исключённом из Git файле `deploy/compose/.env`, загружает образы и печатает адрес Grafana и локальные учётные данные. Документация платформы: [OPENEGIZ.ru.md](OPENEGIZ.ru.md). Остановка с сохранением данных - `make down`. Наличие Docker Compose само по себе не означает интеграцию нашей модели с Ditto. `examples/mine/` - исходный пример организатора; его функции не выдаются за работу команды.
+
+## Как увидеть работу функций
+
+1. **Обучение:** `/career.html`. Нажмите «Загрузить первый самосвал», дождитесь погрузки и отправьте руду наверх. Деньги появляются только после разгрузки: +100 за рейс. Две доставки оплачивают самосвал за 200, пять - второй экскаватор за 500. Можно включить скорость времени x2.
+2. **Автодиспетчер:** `/dispatch.html?mode=classic`. Оставьте «Автоматический» и нажмите «Начать смену». Гружёные получают приоритет, пустые ждут в карманах. Цветные рёбра показывают занятость. Стандартный расчёт: 500 т за 269,05 с, 3 звезды. Результат зависит от изменения лимитов и режима.
+3. **Ручной диспетчер:** на той же странице выберите «Ручной». Нажмите на T1 и «Ехать»: он отправится до ближайшего безопасного узла. Клик по номеру кармана открывает сигналы для гружёных/пустых и лимит нижнего участка. «Пропускать» позволяет пустому ждать встречный груз. «Стоять» действует у ближайшего безопасного узла. Сброс смены - круговая стрелка рядом с паузой.
+4. **Ручная техника:** `/career.html`, блок «За руль техники». W/S - вперёд/назад, A/D - поворот, пробел - тормоз. Есть кнопки на экране, вид сзади и из кабины. Для экскаватора: Q/E - башня, R/F - стрела, T/G - рукоять, Y/H - ковш. «Подготовить площадку погрузки» ставит экскаватор и самосвал рядом с рудой. Закройте ковш в породе, поднимите, поверните над кузовом и откройте. Выход - «Вернуться к автопарку» или Escape.
+5. **Камнепад:** в ручной практике подъедьте к серпантину у скального борта, нажмите «Вызвать камнепад рядом». При отсутствии подходящего места появляется подсказка. После предупреждения камни блокируют проезд; их можно убрать ковшом. Практика действует до выхода и не начисляет монеты автопарка.
+6. **Подземная сеть:** `/career.html`, блок «Подземный горизонт». Нажмите «Показать вход на дне карьера», затем «Сесть в вагонетку». W/S - движение, пробел - тормоз. Перед развилкой остановитесь и выберите A/1 или D/2. Есть 8 забоев и 7 развилок до условной глубины 150 м ниже входа. «На станцию» сбрасывает поездку, «Вернуться в карьер» завершает её.
+7. **Алтай:** `/altai.html` либо меню карты в шапке. Это художественная дополнительная локация, а не вид Рудного. Её сохранение независимо от дневной карты.
+
+Загрузка моделей может занять время, особенно при программном WebGL без GPU. Карта готова, когда исчезает «Готовим ваш карьер…» и появляется техника. Открывать HTML через `file://` нельзя: модули и модели должны загружаться через HTTP.
+
+## Проверки и диагностика
+
+Проверить HTTP в другом терминале при запущенном сервере:
+
+```bash
+curl -I http://127.0.0.1:8766/welcome.html
+curl -I http://127.0.0.1:8766/dispatch-core.mjs
+```
+
+Оба запроса должны вернуть `200`; для `.mjs` сервер возвращает `application/javascript`. Для WebGL модулей это существенно. Ссылки на GLB, WASM, текстуры и JSON обслуживаются тем же сервером.
+
+Для тестов нужен Node.js 22 (для самой игры он не нужен):
+
+```bash
+cd team/quarry
+node --test tests/*.test.mjs
+```
+
+На 25 октября 2026 года все 97 тестов проходят. Они проверяют граф/FSM, учебную экономику, сохранения, приоритет и тупик, ручную физику, копание/массу руды, ограничение гидравлики, камнепады, камеру, сеть шахты, топологию окружения и ход вступления. Эти тесты не проверяют интеграцию с OpenEgiz, которой пока нет. Проверки Blender из `tests/*.py` не входят в эту команду и не нужны для запуска. Результаты и границы проверки: [team/quarry/CHECKS.md](team/quarry/CHECKS.md); контрольные суммы файлов - `team/quarry/runtime-manifest.json`.
+
+| Проблема | Решение |
+|---|---|
+| `Address already in use` | Запустите на другом порту, например 8767 |
+| Белый экран или ошибка загрузки модуля | Используйте HTTP, проверьте `.mjs` MIME и вкладку Console; включите WebGL в браузере |
+| На слабой машине низкая частота кадров | Закройте лишние WebGL-вкладки; не открывайте одновременно обе игровые карты; диспетчерская проще по окружению |
+| После возврата машины стоят | При скрытии вкладки включается пауза, нажмите «Продолжить» |
+| Нет нового прогресса на другом устройстве | Сохранения локальны для браузера и домена; серверной синхронизации нет |
+| Нужно начать обучение заново | «Как играть» / `?` в шапке, затем сброс прогресса с подтверждением |
+
+## Состав репозитория
 
 | Path | Contents |
 |---|---|
-| `team/` | Directory for the Team's code. Using it is optional: any part may be changed, including the platform core |
-| `SUBMISSION.md` | Description of the Submission: **required** |
-| `presentation.pdf` | Presentation: **required**, in the repository root |
-| `AGENTS.md`, `CLAUDE.md` | Instructions for your AI agents (Codex, Claude Code and others read them automatically) |
-| `examples/mine/` | The Example Mine: shows how a digital mine is built on OpenEgiz. It is not a basis for the Submission |
-| `OPENEGIZ.md`, `OPENEGIZ.ru.md` | Documentation of the OpenEgiz platform v1.0.4 |
+| `team/quarry/dist/` | Готовая веб-сборка, исходные JS/MJS/CSS/HTML, модели, материалы и локальные зависимости |
+| `team/quarry/serve.py`, `compose.yml` | Запуск веб-приложения через Python или Docker |
+| `team/quarry/tests/` | Проверки логики и экспортированной геометрии |
+| `team/quarry/scripts/` | Генерация гор и поверхностных материалов; Blender для обычного запуска не нужен |
+| `team/quarry/model-source/` | Авторские скрипты базовой сцены и техники; исторический пайплайн, не шаг запуска |
+| `team/quarry/deploy/` | Конфигурация публичного Nginx; приватные ключи и сертификаты в репозиторий не входят |
+| `team/quarry/THIRD_PARTY.md` | Происхождение файлов и лицензии зависимостей |
+| `SUBMISSION.md` | Замысел, реализованные функции, данные и ограничения |
+| `presentation.pdf` | Презентацию команда предоставляет отдельно; сейчас файла нет |
+| `examples/mine/` | Неизменённый демонстрационный рудник организатора |
+| `OPENEGIZ.md`, `OPENEGIZ.ru.md` | Документация платформы OpenEgiz v1.0.4 |
 
-The Submission is the `main` branch at the moment of the Freeze; other branches are not evaluated.
+Геометрия в GLB уже экспортирована и входит в Git; для воспроизведения работающего приложения не требуется повторная генерация в Blender. Исходники наших браузерных модулей не минифицированы. Материалы внешних публикаций не скачиваются при запуске.
 
-## License
+## Лицензия
 
-The Submission is distributed under the MIT license, see [LICENSE](LICENSE). Copyright belongs to the Team: add the line `Copyright (c) 2026 <Team members>` to `LICENSE`.
+Авторский код и созданные для проекта материалы распространяются по MIT, см. [LICENSE](LICENSE). Исходные лицензии OpenEgiz и библиотек сохранены. Учётные данные, SSH-ключи, файлы `.env` с секретами и персональные данные в пакет не входят. Референсы реальных карьеров приведены ссылками в [SUBMISSION.md](SUBMISSION.md); не заявляется связь с оператором предприятия или доступ к его производственной телеметрии.
 
 ---
 
-Platform: [aleka07/openegiz](https://github.com/aleka07/openegiz). If the platform was useful to you, support the project with a star on GitHub.
+Платформа конкурсного шаблона: [OpenEgiz](https://github.com/aleka07/openegiz). Готовый результат команды: [openegiz.ecoout.com.kz](https://openegiz.ecoout.com.kz/).

@@ -1,0 +1,464 @@
+{
+  "files": [
+    {
+      "path": "altai-environment.mjs",
+      "bytes": 10340,
+      "sha256": "2620f9b8c2fc820034db3e91cb8b39fa01f462aee66916a46353b0c2bed42dfa"
+    },
+    {
+      "path": "altai-terrain.mjs",
+      "bytes": 2351,
+      "sha256": "2c7876b8a6427ea6daffbba1ad335738ab37088c9c84d9bd3a023364685ca380"
+    },
+    {
+      "path": "altai.html",
+      "bytes": 6415,
+      "sha256": "e7b694b4587475af7bf16e6732b2785cb472f0456f1deb5a28c65f9e57499769"
+    },
+    {
+      "path": "assets/excavator-preview.png",
+      "bytes": 1789013,
+      "sha256": "94132423553041de585eb34615c9b6cbbeee493da739fbdbc247b9f5703666db"
+    },
+    {
+      "path": "assets/excavator.glb",
+      "bytes": 824872,
+      "sha256": "d60e8e32c7f2e33b6a45f914bd58233cae5f6f2902bd88249ecfb4821cc2fded"
+    },
+    {
+      "path": "assets/intro/soil-color.png",
+      "bytes": 1356196,
+      "sha256": "60ed0e3cc323bb6a349f856003da70b17ad2d5f0d4f949c6d45996fe5b849b2d"
+    },
+    {
+      "path": "assets/intro/soil-normal.png",
+      "bytes": 2720515,
+      "sha256": "8585918eff996bf76c942ab1fa626c7de29c7155bc6edb3da2709c7a608639a8"
+    },
+    {
+      "path": "assets/mountains/altai-heights.f32",
+      "bytes": 481636,
+      "sha256": "80c2cd0d7f1ed46fb2783c78c489fb54cd4cd1e513e9599439f0cc925a05220f"
+    },
+    {
+      "path": "assets/mountains/altai-landscape.glb",
+      "bytes": 7584968,
+      "sha256": "187767b8417322fd130787d39fb6468625d17a6d74ac8afb111276a5b05d691c"
+    },
+    {
+      "path": "assets/mountains/altai-profile.json",
+      "bytes": 743532,
+      "sha256": "bbde48960e300f97383eabc7ec8c72ef0369cdb9758c5d2dbc8c0f720a03b971"
+    },
+    {
+      "path": "assets/mountains/altai-report.json",
+      "bytes": 189,
+      "sha256": "18ad9f5344969ce41a2602ddf6493dec6561e7af8d5ea5921ad280aee3badf6a"
+    },
+    {
+      "path": "assets/mountains/botany.glb",
+      "bytes": 60492,
+      "sha256": "f3e729e2fe4ddbc872a1cbe78820823e1e9a4494e099e7b45b38dc5d7dd7e31f"
+    },
+    {
+      "path": "assets/mountains/cedar-bough.png",
+      "bytes": 31148,
+      "sha256": "e1f4195f2e176c55692478dafb205f17a1c75d573af503e4cd859642b8ec85de"
+    },
+    {
+      "path": "assets/mountains/mountain-grain.png",
+      "bytes": 207178,
+      "sha256": "59d632a33f2e79d49d6f14e18c9532139b6d014890ae8f61d911e9d30a92b442"
+    },
+    {
+      "path": "assets/mountains/quarry-heights.f32",
+      "bytes": 481636,
+      "sha256": "6c763b0ca4282cbff21c8ccf478e659ba09fb50bf7eba4d593bf35572590222d"
+    },
+    {
+      "path": "assets/mountains/quarry-landscape.glb",
+      "bytes": 7584968,
+      "sha256": "ae44d73f10ac8966d92901311af858c8b737d39aeb7f39fa6c95c60e3ffa6bd3"
+    },
+    {
+      "path": "assets/mountains/quarry-profile.json",
+      "bytes": 581256,
+      "sha256": "61261ca5e4f266cca448a1d5d169d65fb8420d8b129f38a83aea9eeecc1e6b17"
+    },
+    {
+      "path": "assets/mountains/quarry-report.json",
+      "bytes": 190,
+      "sha256": "5c3cc61f67729896297697a360437413e9b57c08d669cb82778f595f73eab2d0"
+    },
+    {
+      "path": "assets/quarry-preview.png",
+      "bytes": 2235070,
+      "sha256": "db75d89fcb99a28dca82f7559cb9b6db1d83eb8e984e43e565952ea0a864db85"
+    },
+    {
+      "path": "assets/quarry-v2.glb",
+      "bytes": 25351592,
+      "sha256": "53b771e1b48022dbad2da14eb5a3109697a0d49c5f0cd90b62efcd76e255a0c4"
+    },
+    {
+      "path": "assets/quarry-v3.glb",
+      "bytes": 24383156,
+      "sha256": "10041cc0930e251ecd9103dfec5ad649d958abf61214e429da4d86c2904aad76"
+    },
+    {
+      "path": "assets/quarry-v4.glb",
+      "bytes": 23501716,
+      "sha256": "341fe0e7d967a8f869f020bf88efd8c5b0fe0a63d1b55ec2b6fa1633c47e3741"
+    },
+    {
+      "path": "assets/quarry.glb",
+      "bytes": 23973548,
+      "sha256": "d183d766564eb730a6922543c4490f32e9813ca3bc8ac602d1c3b0645d225e7b"
+    },
+    {
+      "path": "assets/road-graph.json",
+      "bytes": 122681,
+      "sha256": "410bd9136a642fdeaa30f7c16c4d5a7a013fc9dc88d660aac7741bb4e6e97463"
+    },
+    {
+      "path": "assets/road-route.json",
+      "bytes": 42826,
+      "sha256": "85e8f62c74e16f0c852afe7ad54d85a60f969d2a836def7b53d3715b2623b6df"
+    },
+    {
+      "path": "assets/surfaces/gravel-albedo.png",
+      "bytes": 1018284,
+      "sha256": "7404a02f3aae9c0bac1a1824f05d8a335ab561ee91b4c01bf67405c8289933e4"
+    },
+    {
+      "path": "assets/surfaces/gravel-normal.png",
+      "bytes": 2320207,
+      "sha256": "584a4fcccf24404d6958dae81eb7286c11439172000847ea56f4e3760735a852"
+    },
+    {
+      "path": "assets/surfaces/gravel-roughness.png",
+      "bytes": 239363,
+      "sha256": "4d93a55f42c53e747e4f54d9a67012b7fd5a0704f60c13d5c8abe83f0758becb"
+    },
+    {
+      "path": "assets/surfaces/road-albedo.png",
+      "bytes": 1033428,
+      "sha256": "21e5a20019b9efe38494b753965bb8ac9623f3a741f4d9931ef6b36b38c1ed61"
+    },
+    {
+      "path": "assets/surfaces/road-normal.png",
+      "bytes": 1501433,
+      "sha256": "454e4a2094ba9ed650b535624c368b7577a21fc2e7d171fb939cd3466a2032b2"
+    },
+    {
+      "path": "assets/surfaces/road-roughness.png",
+      "bytes": 226616,
+      "sha256": "4047848017f5f0eeedd90aed02fa3842ab34560754155eecd7f90e51387e358b"
+    },
+    {
+      "path": "assets/surfaces/rock-albedo.png",
+      "bytes": 852856,
+      "sha256": "097dfb740b570897ef095113a58aa6f028e659ddfca6372f0b69cb8d5fdd373b"
+    },
+    {
+      "path": "assets/surfaces/rock-normal.png",
+      "bytes": 2178054,
+      "sha256": "51b90da6c9396527e557e5ac9636cef353fef9e8111c21a5730747bc74a902e6"
+    },
+    {
+      "path": "assets/surfaces/rock-roughness.png",
+      "bytes": 259927,
+      "sha256": "32d3ac83d446b2081a1f7d33f331e3d5e6f8fea57af7c88a14ca8f14917d3dc3"
+    },
+    {
+      "path": "assets/terrain-design.json",
+      "bytes": 5849,
+      "sha256": "6bb5bc800f54d95acbc5fa09559dafa53019b42498dba67cb03ebca478563dfe"
+    },
+    {
+      "path": "assets/terrain.glb",
+      "bytes": 9712508,
+      "sha256": "fac1cf5184c3b8820fc41e13f31be100fabdc5464c670d90aaa2c1cfdf07a484"
+    },
+    {
+      "path": "assets/truck-preview.png",
+      "bytes": 1322137,
+      "sha256": "07f15fd4c6d6d51bfa683163d0c4a775ad83645dc1c8cc8814419fd835297b06"
+    },
+    {
+      "path": "assets/truck.glb",
+      "bytes": 823084,
+      "sha256": "4198ca955411529af4f6c1e45f142ff252cddc599d5d784be5bf0f1cc61159ac"
+    },
+    {
+      "path": "career-core.mjs",
+      "bytes": 8158,
+      "sha256": "12d7c3636ee4dc03f22e04eb7fe14ed04f0062d2bf3e59cd28e5a81a83a38515"
+    },
+    {
+      "path": "career-view.js",
+      "bytes": 22078,
+      "sha256": "e3fa5838b8e396ea49f539e6b9c4e42059e292f295b2c30f54a1706dcf471e28"
+    },
+    {
+      "path": "career.css",
+      "bytes": 9337,
+      "sha256": "187f0b51291385e6e399e4e230463b05195952893729b4b740ac9fca05d61884"
+    },
+    {
+      "path": "career.html",
+      "bytes": 6389,
+      "sha256": "4e0754436730e9296fa54986fd1fe4c059670a770f2ccabb180a9ea187707e9a"
+    },
+    {
+      "path": "dispatch-core.mjs",
+      "bytes": 16953,
+      "sha256": "4cd3ef5c44ea3908a364b032027900c2bb50a51061d2fac616771831c09a60de"
+    },
+    {
+      "path": "dispatch-view.js",
+      "bytes": 17381,
+      "sha256": "a0734d23d277870dad6bd8334f9451011b6b1ada97cb4f1e9823088743105694"
+    },
+    {
+      "path": "dispatch.css",
+      "bytes": 10148,
+      "sha256": "71fb4ad5caa1c20d8adab05f9fe392c4b24aba8fbf8f27f28116fea7a6b7ed86"
+    },
+    {
+      "path": "dispatch.html",
+      "bytes": 9023,
+      "sha256": "224fcdc7b3cb84c6b7216fe0ab4a1029c22c07910572d54ccce0f3f60217850c"
+    },
+    {
+      "path": "excavator-inspection.js",
+      "bytes": 1711,
+      "sha256": "8b7c3e54ebc915da1ab70c96be0a1728e91079332f3457da3418eea1cdf32745"
+    },
+    {
+      "path": "excavator-rig.mjs",
+      "bytes": 5321,
+      "sha256": "f963f69c8faad555a92f5cd836c1faaf545dd90ef33c47928dfd84360ec8c8f7"
+    },
+    {
+      "path": "index.html",
+      "bytes": 6186,
+      "sha256": "cb80f04f3f748990772439473974fb17f5759b251211e8fb51ede6334c5b4d11"
+    },
+    {
+      "path": "intro-choreography.mjs",
+      "bytes": 987,
+      "sha256": "c421a61e31f8572c8a86318454d6ff4c36cbfa3802b3093d613e928436994e0e"
+    },
+    {
+      "path": "manual-camera.mjs",
+      "bytes": 3200,
+      "sha256": "da49eafa5046d1f93de996ad8606ffe4a3e8fa06537141fd425db51b0a54d01a"
+    },
+    {
+      "path": "manual-controls.css",
+      "bytes": 6255,
+      "sha256": "2609f60aacec1913513781fe2b9df008b8251242b049a574b3e4b1a578001142"
+    },
+    {
+      "path": "manual-controls.mjs",
+      "bytes": 21493,
+      "sha256": "0cdeb59d14d792d4414940b80c3ae3a40720f7168c4a360d6f23b37e0b5f1461"
+    },
+    {
+      "path": "manual-core.mjs",
+      "bytes": 3199,
+      "sha256": "93130429034e4b61554cbc5e2755f0cf24fc02a04c96e44182a818842045ce6e"
+    },
+    {
+      "path": "manual-physics-core.mjs",
+      "bytes": 3943,
+      "sha256": "e4bc373b3e6d596e2d0bfe2a088bade88a20d58e9984d2a8fe15a75f71fa785b"
+    },
+    {
+      "path": "manual-rockfalls.mjs",
+      "bytes": 7802,
+      "sha256": "96e7c3b8f30bdac40e294d8656428ba61cf43cad02d7a012a757ec9328b2439c"
+    },
+    {
+      "path": "manual-worksite.mjs",
+      "bytes": 19578,
+      "sha256": "f972ef5d15e04b39eca760067f5b48273a5fe48cbf73cdd9dadaf13b8b99d5f3"
+    },
+    {
+      "path": "mine-core.mjs",
+      "bytes": 3086,
+      "sha256": "5893784afc16968da790466c03476c88b273ef0ce9586d3e7d00efdd67bc45d1"
+    },
+    {
+      "path": "mine-network-world.mjs",
+      "bytes": 3681,
+      "sha256": "e1fd016df33bebb3670424bb10e03f842a1c5737b42bd5471f8240de0776d3bc"
+    },
+    {
+      "path": "mine-network.mjs",
+      "bytes": 5638,
+      "sha256": "c945c0e746412309632586cd60c9cddd2d720c4a1fbfad70ff851886243f25e3"
+    },
+    {
+      "path": "mine-portal-core.mjs",
+      "bytes": 3017,
+      "sha256": "04463c17f298ef0201c6c3b5aac74701e63925eb439fc1492306d31321f3986d"
+    },
+    {
+      "path": "mine-ride.css",
+      "bytes": 4379,
+      "sha256": "3d392e6f07a330ae86a3a63d06f05cea7b84ebb5e388288f8ee46fe84f5ff0d8"
+    },
+    {
+      "path": "mine-ride.mjs",
+      "bytes": 13547,
+      "sha256": "6d215ac8eecbea683e660d8260e68640dc737f43a756991bae2d2560e90bf958"
+    },
+    {
+      "path": "mine-world.mjs",
+      "bytes": 15637,
+      "sha256": "31981a50352eb4991db3dd9a3c9bfe353dfe5748e799a299fcef1c2176d7878b"
+    },
+    {
+      "path": "mountain-landscape.mjs",
+      "bytes": 13973,
+      "sha256": "fbfbaaedf0f8f92ac772354fa40868634ba3983fbcccb54e610189a683e5c9ed"
+    },
+    {
+      "path": "orange-white.css",
+      "bytes": 8123,
+      "sha256": "302c59aa0abff877bc3ead0772eb50ffd15f1632dfcb90916b0e6de8bd856a32"
+    },
+    {
+      "path": "quarry-landscape.mjs",
+      "bytes": 9387,
+      "sha256": "2acd299475b373fc7fe261674aeb151d94b06d62633aac2e84993fd771a195d6"
+    },
+    {
+      "path": "quarry-maps.css",
+      "bytes": 5406,
+      "sha256": "e1ccceb5432c1636dda25849d2eb7374fac3343910ce1b938647f997f8027c14"
+    },
+    {
+      "path": "quarry-maps.mjs",
+      "bytes": 1738,
+      "sha256": "965dba2e148ae149283d18bd5a866192606e016ccc3cf02db10402406ae92dce"
+    },
+    {
+      "path": "quarry-materials.mjs",
+      "bytes": 5623,
+      "sha256": "7383186975dcb3da5e7312afb9020863a7d3e43036d6ba335e958f864af72a28"
+    },
+    {
+      "path": "quarry-mine-connection.mjs",
+      "bytes": 5702,
+      "sha256": "73a7a8563cb12c0fa98cc1a5d2cde8e64fffdc16ad478ca60fd734dc9ad6f348"
+    },
+    {
+      "path": "running-gear.mjs",
+      "bytes": 5900,
+      "sha256": "fb2a76869e09cde136bd99527556077c24985d8cee1549d222cde3f05d172f3d"
+    },
+    {
+      "path": "stockpile-colliders.mjs",
+      "bytes": 2430,
+      "sha256": "de05c0895bfa0cb71542cee21f204385cb4b4304af2a99d6de1ebf3bcf88d094"
+    },
+    {
+      "path": "style.css",
+      "bytes": 9704,
+      "sha256": "d39a28f878e459852ec3e965086105620497ee1afe55125c916de8c70a81269c"
+    },
+    {
+      "path": "vendor/three/LICENSE",
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    {
+      "path": "vendor/three/build/three.core.js",
+      "bytes": 1458113,
+      "sha256": "9edde002b066a9a05676a6127f67735b62baf399bdea529f2f7e31657da769e6"
+    },
+    {
+      "path": "vendor/three/build/three.module.js",
+      "bytes": 662772,
+      "sha256": "9052042d676cb0fdc1ddfefe193053f34b7ac0513a616fdac4535d49987812ea"
+    },
+    {
+      "path": "vendor/three/examples/jsm/controls/OrbitControls.js",
+      "bytes": 40755,
+      "sha256": "3d79d07ecb686b4e5d93232eedab255331c1beef711e13164eaa1f68655a5f2b"
+    },
+    {
+      "path": "vendor/three/examples/jsm/environments/RoomEnvironment.js",
+      "bytes": 4960,
+      "sha256": "55f466192cc84298755a424c5e040345006b2ee1455589b3b54126c2ea4123f4"
+    },
+    {
+      "path": "vendor/three/examples/jsm/libs/draco/draco_decoder.js",
+      "bytes": 719410,
+      "sha256": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04"
+    },
+    {
+      "path": "vendor/three/examples/jsm/libs/draco/draco_decoder.wasm",
+      "bytes": 285747,
+      "sha256": "c55a594e8ffd18426d36b27fea9618af3df5e173640a3e56d46f09d76f0574f2"
+    },
+    {
+      "path": "vendor/three/examples/jsm/libs/draco/draco_wasm_wrapper.js",
+      "bytes": 58763,
+      "sha256": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8"
+    },
+    {
+      "path": "vendor/three/examples/jsm/loaders/DRACOLoader.js",
+      "bytes": 19030,
+      "sha256": "fdafdf4aa11bbc65d89adb338efd844bedf94073702f9049240ff1f1ea48ad5f"
+    },
+    {
+      "path": "vendor/three/examples/jsm/loaders/GLTFLoader.js",
+      "bytes": 117570,
+      "sha256": "131c0f78c01d19368ae495caa65b3adaa10487810a36a05bb5901b769a35ac16"
+    },
+    {
+      "path": "vendor/three/examples/jsm/utils/BufferGeometryUtils.js",
+      "bytes": 37712,
+      "sha256": "9fb63427ce6641fa14fd0baff9cc4d1b5f9c3d85fd084bf2e90e803c44ec1797"
+    },
+    {
+      "path": "vendor/three/examples/jsm/utils/SkeletonUtils.js",
+      "bytes": 11535,
+      "sha256": "b1632a703206c3d830de9fcbe515696770d04b71a15ee6b50afa6d2c3298c86f"
+    },
+    {
+      "path": "viewer.js",
+      "bytes": 9079,
+      "sha256": "4651fce680de171eb573ba527c386cfcd72fc773fb2692d689a55a086d960b91"
+    },
+    {
+      "path": "welcome-white.css",
+      "bytes": 5382,
+      "sha256": "e22235f72c45654d4614f1d6eafb850edc77d55273f43ede7bde8e6962e7f367"
+    },
+    {
+      "path": "welcome.css",
+      "bytes": 12309,
+      "sha256": "8f9d370d92c2011759dac78c6636d71f24303daf5f0f88ef9f2037fdd235bc87"
+    },
+    {
+      "path": "welcome.html",
+      "bytes": 8865,
+      "sha256": "bead501eb0c53f1cf32717127f1b5d0fb25e74505fe001a197c7e68a05804d46"
+    },
+    {
+      "path": "welcome.js",
+      "bytes": 19468,
+      "sha256": "39228b9361ed83c0bec035489c451bee68d60ddba1cbf83253d2c59a7d5462a1"
+    },
+    {
+      "path": "white-excavator-intro.mjs",
+      "bytes": 6533,
+      "sha256": "b1c37b3fa3418db3f19a7733c89f25d9ab99ddfad9b5a1eb1d0041d600b7fea2"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-# team/
+# Код команды: QUARRY
 
-Directory for the Team's code: services, simulators, models, dashboards, 3D scenes. Using this directory is optional: any part may be changed, including the core of OpenEgiz v1.0.4.
+Наше веб-приложение находится в [quarry/](quarry/). Запуск из корня репозитория: `python3 team/quarry/serve.py`. Открыть http://127.0.0.1:8766/. Готовая публичная демонстрация: [openegiz.ecoout.com.kz](https://openegiz.ecoout.com.kz/).
 
-The [Example Mine](../examples/mine/) shows how twins are structured, how telemetry is sent and how to connect your own service to `make up` through an overlay `compose.yml`.
+Подробная инструкция - [README.md](../README.md), описание и ограничения - [SUBMISSION.md](../SUBMISSION.md). Прототип использует браузерную симуляцию; интеграция собственных состояний с MQTT/Ditto ещё не выполнена. [examples/mine](../examples/mine/) является исходным примером организатора.

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff"><title>Алтай — ночная смена | Мой карьер</title>
+  <meta name="description" content="Отдельная ночная карта: хвойные леса Алтая, горные хребты, освещённый карьер и подземная шахта.">
+  <link rel="stylesheet" href="./career.css">
+  <link rel="stylesheet" href="./orange-white.css?v=2">
+  <link rel="stylesheet" href="./manual-controls.css?v=5">
+  <link rel="stylesheet" href="./mine-ride.css?v=2">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+</head>
+<body class="quarry-white" data-quarry-map="altai">
+  <header><a class="brand" href="./welcome.html">▱ <span>МОЙ КАРЬЕР<small>НАЧИНАЕМ С МАЛОГО</small></span></a><div class="money" aria-label="Баланс"><span class="coin">●</span><strong id="money">0</strong><span>монет</span></div><button id="help" aria-label="Как играть">?</button></header>
+  <main class="layout">
+    <section class="world" aria-label="Ваш карьер в 3D"><div id="career-canvas"></div><div id="labels"></div><div class="world-title"><span id="world-chapter">ПЕРВЫЙ ДЕНЬ</span><h1>Большое дело<br>с одной машины<span>.</span></h1></div><div class="camera-buttons"><button id="overview">⌖ Обзор</button><button id="follow">◎ К машине</button></div><div class="world-bottom"><span id="fleet-summary">1 самосвал · 1 экскаватор</span><div><button id="speed" aria-label="Скорость игры">×1</button><button id="pause" disabled>Ⅱ Пауза</button></div></div><div id="income" role="status" hidden>+100 монет</div><div id="asset-loading" role="status"><span class="loader-icon">▱</span><strong>Готовим ваш карьер…</strong><p>Загружаем ландшафт и технику</p></div><div id="load-error" hidden role="alert"><h2>Не удалось загрузить карьер</h2><button onclick="location.reload()">Попробовать ещё раз</button></div></section>
+    <aside class="control">
+      <section class="guide" aria-label="Следующий шаг"><div class="guide-top"><span id="step-tag">ОБУЧЕНИЕ · ШАГ 1 ИЗ 5</span><button id="skip">Пропустить</button></div><h2 id="guide-title">Начнём с погрузки</h2><p id="guide-copy">У вас уже есть самосвал и экскаватор. Сначала загрузим руду, затем отвезём её наверх и получим деньги.</p><div class="journey"><span id="journey-load">1. Загрузить</span><i>→</i><span id="journey-haul">2. Отвезти</span><i>→</i><span id="journey-money">3. Получить +100</span></div><button id="next" class="primary" disabled>Загрузка карты…</button><p id="guide-note" class="guide-note">Здесь нет таймера: осваивайтесь спокойно.</p></section>
+      <section class="fleet-section"><div class="section-title"><h2>В работе</h2><span id="delivery-count">0 доставок</span></div><div id="fleet"></div></section>
+      <section class="shop"><div class="section-title"><h2>Развиваем карьер</h2><span>МАГАЗИН</span></div><article id="truck-card" class="shop-card"><div class="shop-top"><span class="machine-icon">▰</span><div><h3>Ещё один самосвал</h3><p>Больше машин — больше доставок.</p></div><strong>200<span>монет</span></strong></div><div class="purchase-progress"><div id="truck-progress"></div></div><button id="buy-truck" disabled>Нужно ещё 2 доставки</button><small id="truck-price-note">Стоимость — доход с 2 доставок.</small></article><article id="excavator-card" class="shop-card"><div class="shop-top"><span class="machine-icon">⌁</span><div><h3>Второй экскаватор</h3><p>Погрузка 8 → 4 с. Два места загрузки.</p></div><strong>500<span>монет</span></strong></div><div class="purchase-progress"><div id="excavator-progress"></div></div><button id="buy-excavator" disabled>Нужно ещё 5 доставок</button><small>Стоимость — доход с 5 доставок.</small></article></section>
+      <p class="save-status" id="save-status">Прогресс сохраняется на этом устройстве.</p><a class="advanced-link" href="./dispatch.html?mode=classic">Сложная смена: ручной диспетчер ↗</a>
+    </aside>
+  </main>
+  <dialog id="help-dialog"><form method="dialog"><button class="close" aria-label="Закрыть">×</button></form><span class="eyebrow">ВСЁ ПРОСТО</span><h2>Руда превращается<br>в новый транспорт.</h2><ol><li><strong>Загрузите самосвал.</strong> Экскаватор работает внизу карьера.</li><li><strong>Доставьте руду наверх.</strong> После разгрузки получите 100 монет.</li><li><strong>Купите технику.</strong> Самосвал — 200 монет. Второй экскаватор — 500.</li></ol><p>После обучения машины ходят в рейсы сами и безопасно разъезжаются. Вы развиваете парк. Нажмите ×2, чтобы ускорить игру.</p><p>Здесь нет таймера, расхода топлива и поломок. Прогресс хранится в этом браузере; пока страница закрыта, карьер не работает.</p><button id="reset-career" class="reset-button">Начать новый карьер</button><div id="reset-confirm" hidden><p>Деньги, покупки и обучение будут сброшены.</p><button id="confirm-reset">Начать заново</button><button id="cancel-reset">Оставить мой карьер</button></div></dialog>
+<script type="module" src="./career-view.js?v=white-2"></script>
+</body>
+</html>

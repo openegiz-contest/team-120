@@ -1,0 +1,79 @@
+/* White studio presentation. The original landing theme remains available. */
+:root:has(.welcome-white){--bg:#fff;--cream:#232323;--muted:#737373;--orange:#ed681f;--line:#e8e8e8;color-scheme:light;background:#fff}
+.welcome-white{background:#fff;color:#232323}
+.welcome-white .masthead{height:92px}
+.welcome-white .masthead nav{color:#646464}
+.welcome-white .wordmark>span{color:#767676}
+.welcome-white .header-play{border-color:#dedede;border-radius:4px;transition:border-color .2s,background .2s}
+.welcome-white .header-play:hover{background:#fff5ed;border-color:#ed681f}
+.welcome-white .hero{min-height:670px;height:calc(100svh - 92px);max-height:930px}
+.welcome-white .hero-copy{padding-top:66px;width:53%}
+.welcome-white h1{font-size:clamp(58px,6.35vw,104px);font-weight:500;letter-spacing:-.065em}
+.welcome-white h1 em{font-style:normal;font-family:inherit;font-weight:600;font-size:1.08em;letter-spacing:-.07em}
+.welcome-white .eyebrow{color:#777;letter-spacing:1.65px}
+.welcome-white .live-dot{box-shadow:none}
+.welcome-white .hero-description{color:#6c6c6c}
+.welcome-white .primary{background:#ed681f;color:#fff;border-radius:4px;box-shadow:0 6px 18px #d8511112}
+.welcome-white .primary:hover{background:#d85512;box-shadow:0 8px 22px #d8511124}
+.welcome-white .action-note{color:#767676}
+.welcome-white .contours{background:none}
+.welcome-white .contours:after{display:none}
+.welcome-white .machine-stage{left:41%;bottom:76px}
+.welcome-white .machine-number{-webkit-text-stroke-color:#ededed;font-weight:500;right:12%;top:8%;font-size:230px}
+.welcome-white .machine-poster{filter:none;mix-blend-mode:multiply}
+.welcome-white .stage-coordinate,.welcome-white .stage-coordinate small{color:#989898}
+.welcome-white .model-caption{color:#424242;bottom:109px}
+.welcome-white .model-caption small{color:#828282}
+.welcome-white .caption-line{background:#e0e0e0}
+.welcome-white .model-switch{border-color:#e5e5e5}
+.welcome-white .model-switch button{color:#858585}
+.welcome-white .model-switch button[aria-pressed=true]{color:#252525}
+.welcome-white .model-status{color:#797979}
+.welcome-white .scroll-cue,.welcome-white .replay,.welcome-white .edition{color:#797979}
+.welcome-white .scroll-cue>span{border-color:#dedede}
+.welcome-white .replay:hover{color:#d85512}
+.welcome-white .facts{background:#fafafa;border-block:1px solid #ececec;color:#252525}
+.welcome-white .facts>div{border-color:#e4e4e4}
+.welcome-white .facts p{color:#797979}
+.welcome-white .facts>a span{color:#ed681f}
+.welcome-white .progression{background:#fff}
+.welcome-white .section-top{color:#858585}
+.welcome-white .section-heading>p,.welcome-white .steps p{color:#757575}
+.welcome-white .steps article{border-color:#e4e4e4}
+.welcome-white .step-top>span{color:#a2a2a2}
+.welcome-white .step-top svg{stroke:#ed681f}
+.welcome-white .steps h3{font-weight:500}
+.welcome-white .step-foot{border-color:#ececec;color:#898989}
+.welcome-white .step-foot b{color:#c85115}
+.welcome-white .closing{background:#fff6ef;color:#242424;border-top:1px solid #ffe5d2}
+.welcome-white .closing>.eyebrow{color:#927460}
+.welcome-white .closing h2 em{color:#e3621c}
+.welcome-white .closing .primary{background:#ed681f;color:#fff}
+.welcome-white .closing-lines{border-color:#eb7a3b12;box-shadow:0 0 0 35px #eb7a3b06,0 0 0 70px #eb7a3b05,0 0 0 105px #eb7a3b04}
+.welcome-white footer{color:#838383;border-top:1px solid #ececec}
+.welcome-white #earth-intro{background:#fff}
+.welcome-white .earth-fallback{background:#fff;filter:none}
+.welcome-white .intro-brand{display:none}
+.welcome-white #skip-intro{color:#777;background:#ffffffd9;border:1px solid #eee;border-radius:4px;transition:opacity .5s,background .2s;font-size:10px}
+.welcome-white #skip-intro:hover{color:#d85512;background:#fff6ef}
+.welcome-white #skip-intro:focus-visible{outline:2px solid #ed681f;outline-offset:4px}
+.welcome-white .intro-bottom{bottom:9%;left:20%;right:20%;color:#777;text-shadow:none;letter-spacing:1px;font:11px/1.6 Arial,sans-serif;justify-content:center;gap:20px;transition:opacity .5s}
+.welcome-white #intro-percent{display:none}
+.welcome-white .intro-bottom>div{flex-basis:112px;width:112px;height:2px;background:#f0f0f0;position:absolute;top:38px;overflow:hidden}
+.welcome-white .intro-bottom i{height:2px;background:#ed681f}
+.welcome-white #earth-intro[data-phase=blank] #skip-intro,.welcome-white #earth-intro[data-phase=blank] .intro-bottom{opacity:0}
+.welcome-white .intro-active .hero-copy{transform:none}
+@media(min-width:1700px){.welcome-white .hero-copy{padding-top:100px}}
+@media(max-width:1100px) and (min-width:701px){.welcome-white .hero-copy{width:56%}.welcome-white h1{font-size:64px}.welcome-white .machine-stage{left:43%;right:-5%}.welcome-white .eyebrow{font-size:8px}}
+@media(max-width:700px){
+  .welcome-white .masthead{height:78px}
+  .welcome-white .hero{height:auto;min-height:0;max-height:none}
+  .welcome-white .hero-copy{padding:42px 6% 0;width:100%}
+  .welcome-white h1{font-size:clamp(44px,12.3vw,78px);margin-top:24px}
+  .welcome-white .eyebrow{font-size:7px;letter-spacing:1.2px}
+  .welcome-white .machine-stage{left:auto;right:auto;bottom:auto;height:370px;margin-top:10px}
+  .welcome-white .machine-number{font-size:160px;top:2%}
+  .welcome-white .model-caption{bottom:85px}
+  .welcome-white .intro-bottom{bottom:17%;left:6%;right:6%;font-size:10px}
+  .welcome-white .intro-bottom>span:first-child{max-width:none}
+}

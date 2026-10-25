@@ -1,0 +1,10 @@
+{
+  "kind": "altai",
+  "vertices": 120409,
+  "triangles": 228280,
+  "maxHeight": 2865.449462890625,
+  "trees": 3800,
+  "rocks": 850,
+  "grass": 2800,
+  "roadMaxGrade": 0.06807964709474103
+}

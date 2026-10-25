@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#202523">
+  <meta name="description" content="Интерактивная индустриальная 3D-диорама открытого карьера: семь уступов, спиральный съезд и дробильный комплекс.">
+  <title>Карьер / 3D-диорама</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 8h26M6 14h20M9 20h14M12 26h8"/></svg><span>QUARRY<span class="brand-sub">INDUSTRIAL DIORAMA</span></span></div>
+    <div class="header-center"><span class="dot"></span>Интерактивная 3D-модель</div>
+    <a class="dispatch-entry" href="./career.html">Играть →</a>
+    <a class="download" href="./assets/terrain.glb" download="Quarry_Terrain.glb">Скачать рельеф <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <aside class="sidebar">
+      <div class="eyebrow">ОТКРЫТАЯ РАЗРАБОТКА / 01</div>
+      <h1>Карьер<br>в деталях<span>.</span></h1>
+      <p class="intro">Непрерывный съезд до дна.<br>Карманы для разъезда.<br>Ровные рабочие площадки.</p>
+      <dl class="metrics"><div><dt>Глубина выработки</dt><dd>168 <span>м</span></dd></div><div><dt>Ступенчатые уступы</dt><dd>7 <span>ярусов</span></dd></div><div><dt>Технологический съезд</dt><dd>2,99 <span>км</span></dd></div></dl>
+      <section class="layers"><h2>Слои модели</h2><label><input type="checkbox" data-layer="plant" checked><span>Производственный комплекс</span></label><label><input type="checkbox" data-layer="fleet" checked><span>Карьерная техника</span></label><label><input type="checkbox" data-layer="details" checked><span>Освещение и детали</span></label></section>
+      <p class="note">Концептуальная диорама.<br>Без геодезической привязки<br>к реальному месторождению.</p>
+    </aside>
+    <section class="viewport" aria-label="Интерактивный просмотр 3D-модели карьера">
+      <div class="viewport-label"><span class="cross">+</span> ОБЪЕКТ 01 <span class="slash">/</span> ОБЩИЙ ВИД</div>
+      <div id="canvas-container"></div>
+      <div id="loader" class="loader" role="status" aria-live="polite"><img src="./assets/quarry-preview.png" alt="Превью 3D-модели"><div class="load-copy"><span id="load-label">Загружаем 3D-модель</span><span id="progress">0%</span></div><div class="progress-track"><div id="progress-bar"></div></div><p>Геометрия и PBR-материалы</p></div>
+      <div class="views" role="group" aria-label="Ракурсы модели"><button data-view="terrain" class="active" aria-pressed="true">Рельеф</button><button data-view="hero" aria-pressed="false">Общий вид</button><button data-view="top" aria-pressed="false">Сверху</button><button data-view="plant" aria-pressed="false">Комплекс</button><button data-view="floor" aria-pressed="false">Дно карьера</button><button data-view="excavator" aria-pressed="false">Экскаватор</button><button data-view="truck" aria-pressed="false">Самосвал</button></div>
+      <aside id="terrain-detail" hidden><span class="eyebrow">ГЕОМЕТРИЯ ЛАНДШАФТА</span><h2>Съезд и разъезды</h2><p>9 м — проезжая часть · 8 карманов по 19 м<br>Плавные уклоны до 6,2% · Единая сетка грунта</p><a href="./assets/terrain-design.json" download>Параметры рельефа ↗</a></aside>
+      <aside id="excavator-detail" hidden><span class="eyebrow">ДЕТАЛИЗИРОВАННЫЙ УЗЕЛ / 01</span><h2>Гидравлический экскаватор</h2><p>104 трака · 6 зубьев ковша<br>Кабина с интерьером · Гидравлика и шарниры</p><a href="./assets/excavator.glb" download="Excavator_Detailed.glb">Скачать экскаватор отдельно ↗</a></aside>
+      <aside id="truck-detail" hidden><span class="eyebrow">КАРЬЕРНАЯ ТЕХНИКА / 02</span><h2>Карьерный самосвал</h2><p>Шины с объёмным протектором<br>Кабина · Лестницы · Гидравлика кузова</p><a href="./assets/truck.glb" download="Truck_Detailed.glb">Скачать самосвал отдельно ↗</a></aside>
+      <div class="canvas-tools"><button id="rotate" aria-pressed="false" title="Автоматическое вращение">↻ <span>Вращение</span></button><button id="reset" title="Вернуть общий вид">⌖ <span>Сбросить</span></button></div>
+      <div class="canvas-footer"><span class="instructions">Вращайте мышью · Колесо — масштаб · Правая кнопка — перемещение</span><span class="scale-mark">МЕТРЫ / Y ↑</span></div>
+      <div id="error" hidden role="alert"><h2>Не удалось открыть 3D</h2><p>Попробуйте перезагрузить страницу или скачайте модель для просмотра в Blender.</p><a href="./assets/terrain.glb" download>Скачать рельеф ↗</a><button onclick="location.reload()">Перезагрузить</button></div>
+    </section>
+  </main>
+  <footer class="footer"><span>СЕМЬ УСТУПОВ. ЕДИНЫЙ МАРШРУТ.</span><span id="model-status">ПОДГОТОВКА СЦЕНЫ</span></footer>
+  <script type="module" src="./viewer.js"></script>
+</body>
+</html>

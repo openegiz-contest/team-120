@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>if(new URLSearchParams(location.search).get('mode')!=='classic')location.replace('./career.html');</script>
+  <meta name="theme-color" content="#182523">
+  <title>QUARRY / Диспетчер смены</title>
+  <meta name="description" content="3D-головоломка диспетчера карьера. Пропускайте гружёные самосвалы, управляйте разъездами и выполните план смены.">
+  <link rel="stylesheet" href="./dispatch.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="./">▱ QUARRY<span>DISPATCH CONTROL</span></a><div class="shift-name"><i></i> СМЕНА 01 / СЕРПАНТИН</div><a class="model-link" href="./?view=terrain">Модель карьера ↗</a></header>
+  <main class="game-layout">
+    <section class="board" aria-label="3D-карта дорог и техники">
+      <div id="game-canvas"></div><div id="map-labels"></div>
+      <div class="map-heading"><span class="eyebrow">ОПЕРАТИВНАЯ КАРТА</span><h1>Грузу — дорогу<span>.</span></h1><p>Одна полоса. Восемь разъездов. Ваши решения.</p></div>
+      <div class="map-tools" aria-label="Управление картой"><button id="overview" title="Общий вид">⌖ <span>Общий вид</span></button><button id="top-view">⊞ <span>Сверху</span></button><button id="follow" aria-pressed="false">◎ <span>За машиной</span></button><button id="graph-toggle" aria-pressed="true">⌁ <span>Граф дорог</span></button></div>
+      <div class="map-key"><span><i class="empty"></i>Пустой ↓</span><span><i class="full"></i>С рудой ↑</span><span><i class="waiting"></i>Ожидание</span></div>
+      <div class="map-help">Выберите машину или номер кармана · Перетаскивание — вращение · Колесо — масштаб</div>
+      <div id="asset-loading" role="status"><span class="eyebrow">ПОДГОТОВКА СМЕНЫ</span><strong id="asset-message">Загружаем карьер и технику…</strong><div class="loading-line"></div></div>
+      <div id="load-error" hidden role="alert"><h2>Не удалось загрузить карту</h2><p>Проверьте соединение и повторите загрузку.</p><button onclick="location.reload()">Повторить</button><a href="./">Открыть просмотрщик</a></div>
+      <section id="result" hidden aria-label="Итог смены" aria-live="polite"><div class="result-card"><span class="eyebrow">ИТОГ СМЕНЫ</span><div id="result-stars"></div><h2 id="result-title"></h2><p id="result-reason"></p><div id="result-stats"></div><button id="again" class="primary">Новая смена ↗</button></div></section>
+    </section>
+    <aside class="dispatch-panel" aria-label="Диспетчерская">
+      <section class="dashboard"><div class="section-heading"><span class="eyebrow">ПЛАН СМЕНЫ</span><span id="phase">ГОТОВНОСТЬ</span></div><div class="production"><strong id="tonnes">0</strong><span>/ 500 т</span><span id="score">0 очков</span></div><progress id="plan-progress" max="500" value="0" aria-label="Выполнение плана"></progress><div class="resources"><div><span>До конца смены</span><strong id="clock">05:00</strong></div><div><span>Топливо парка</span><strong id="fuel">260 <small>л</small></strong></div></div><div class="fuel-track"><div id="fuel-bar"></div><i title="20% остатка"></i></div></section>
+      <section class="dispatch-settings"><div class="section-heading"><h2>Диспетчер</h2><span id="mode-note">ПРИОРИТЕТ ГРУЗА</span></div><div class="segmented" role="group" aria-label="Режим управления"><button id="mode-auto" aria-pressed="true">Автоматический</button><button id="mode-manual" aria-pressed="false">Ручной</button></div><label class="speed-label">Лимит пустого <select id="speed-limit"><option value="24">24 км/ч</option><option value="30">30 км/ч</option><option value="36" selected>36 км/ч</option><option value="42">42 км/ч</option><option value="48">48 км/ч</option></select></label><p class="micro">С грузом на 40% медленнее. Расстояния проходятся в масштабе времени ×8; загрузка 7 с, разгрузка 4 с.</p><div class="shift-actions"><button id="start" class="primary" disabled>Начать смену →</button><button id="pause" disabled>Пауза</button><button id="restart" title="Сбросить смену">↺</button></div><p id="mode-help" class="operator-note">Автодиспетчер резервирует участок до следующего разъезда. Гружёный транспорт получает приоритет.</p></section>
+      <section class="fleet"><div class="section-heading"><h2>Парк техники</h2><span>4 × 100 Т</span></div><div id="fleet-list"></div></section>
+      <section class="selection"><div class="section-heading"><h2 id="selected-title">Самосвал T1</h2><span id="selected-kind">ПУСТОЙ</span></div><p id="selected-status"></p><div id="truck-details"><div class="selected-metrics"><span>Тормоза <strong id="brakes">28 °C</strong></span><span>Простой <strong id="idle">0 с</strong></span></div><div class="heat-track"><div id="heat-bar"></div></div><p id="prediction" class="micro"></p><div class="commands" role="group" aria-label="Команды машине"><button data-command="STOP">■ Стоять</button><button data-command="YIELD">⇥ Пропускать</button><button data-command="GO">▶ Ехать</button></div><p class="micro">Ручные команды действуют до следующего безопасного узла. «Пропускать» удерживает пустую машину в кармане до прохода груза.</p></div><div id="bay-details" hidden><p class="micro">Зелёный сигнал разрешает отправление из этого узла. Проверяйте встречный поток на всём участке.</p><div class="signals"><button id="signal-up" aria-pressed="false">↑ Гружёным: стоп</button><button id="signal-down" aria-pressed="false">↓ Пустым: стоп</button></div><label class="speed-label">Участок ниже <select id="section-speed"><option value="48">Без ограничения</option><option value="36">36 км/ч</option><option value="30">30 км/ч</option><option value="20">20 км/ч</option></select></label></div></section>
+      <details class="rules"><summary>Задача и правила смены</summary><p>Доставьте 500 т за 5 минут. Две машины начинают с грузом внизу, две — пустыми у дробилки. В ручном режиме выдавайте команды машинам или открывайте сигналы карманов на карте.</p><p>Гружёным — приоритет вверх. Пустые используют боковые ветки карманов. Встречные машины на разных рёбрах одного узкого участка могут создать тупик: смена будет остановлена.</p><p>Тормоза нагреваются при спуске. При 115 °C машина ломается и блокирует дорогу. Снижайте скорость или ждите в карманах для охлаждения.</p><p>★ План выполнен вовремя.<br>★★ Потрачено менее 80% топлива, без аварийных остановок.<br>★★★ Дополнительно: нет очередей техники на загрузку и разгрузку (допуск 0,5 с).</p><p>Поражение: время, топливо или неразрешимый встречный затор. Автопауза при уходе со вкладки. Это игровая модель ресурсов, не инженерный расчёт.</p><a href="./assets/road-graph.json" download>Скачать граф дорог ↗</a></details>
+      <section class="event-log"><div class="section-heading"><h2>Журнал смены</h2><span>LIVE</span></div><ol id="events" aria-live="polite"></ol></section>
+    </aside>
+  </main>
+  <script type="module" src="./dispatch-view.js"></script>
+</body>
+</html>
