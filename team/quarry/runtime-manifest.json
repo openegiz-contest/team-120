@@ -12,8 +12,8 @@
     },
     {
       "path": "altai.html",
-      "bytes": 6415,
-      "sha256": "1ef0f71f46fe5e187e9d0b19ee0564aa7b45f59c16b1ce5c6711684fd8994b2c"
+      "bytes": 6423,
+      "sha256": "daa04d3d584a922ca1e42c7adaf93d6f9d5a213af20bc5ebd04ede303d51f71c"
     },
     {
       "path": "assets/excavator-preview.png",
@@ -211,6 +211,11 @@
       "sha256": "097dfb740b570897ef095113a58aa6f028e659ddfca6372f0b69cb8d5fdd373b"
     },
     {
+      "path": "assets/surfaces/rock-micro.png",
+      "bytes": 2846456,
+      "sha256": "17ab97bf2e30447b6471088f5b25ce647fc79fd1c371f75f3b4cbb927f78f0c0"
+    },
+    {
       "path": "assets/surfaces/rock-normal.png",
       "bytes": 2178054,
       "sha256": "51b90da6c9396527e557e5ac9636cef353fef9e8111c21a5730747bc74a902e6"
@@ -219,6 +224,11 @@
       "path": "assets/surfaces/rock-roughness.png",
       "bytes": 259927,
       "sha256": "32d3ac83d446b2081a1f7d33f331e3d5e6f8fea57af7c88a14ca8f14917d3dc3"
+    },
+    {
+      "path": "assets/surfaces/soil-micro.png",
+      "bytes": 3046591,
+      "sha256": "4346cf0adf14c8a9f19bb7b55f763a451122c9bd823c10121910fcdd0f27340d"
     },
     {
       "path": "assets/terrain-design.json",
@@ -247,8 +257,8 @@
     },
     {
       "path": "career-view.js",
-      "bytes": 23833,
-      "sha256": "b76e63123319cd45fc8a74c084c8220528c3003c9c871bc8327ed07679957bbc"
+      "bytes": 24332,
+      "sha256": "01900c6a4818b67b06b1a32539568db66cd1775ac0778c71d0ac55b925aaea52"
     },
     {
       "path": "career.css",
@@ -257,8 +267,8 @@
     },
     {
       "path": "career.html",
-      "bytes": 6389,
-      "sha256": "39023c96e953eb028ff341ff3457ec28a8f50a16873a2f6744ad86fb271a6bd2"
+      "bytes": 6397,
+      "sha256": "9e5040e0a5d7c86f22c14030a6cb24784a3352a9dacba7544f9cfc2c5ff420aa"
     },
     {
       "path": "dispatch-core.mjs",
@@ -302,18 +312,18 @@
     },
     {
       "path": "manual-camera.mjs",
-      "bytes": 3200,
-      "sha256": "da49eafa5046d1f93de996ad8606ffe4a3e8fa06537141fd425db51b0a54d01a"
+      "bytes": 3771,
+      "sha256": "68f7aa7dff385d2f0936b6c0f9758859791b5c49b9d5fb63e03355203f1495ac"
     },
     {
       "path": "manual-controls.css",
-      "bytes": 6255,
-      "sha256": "2609f60aacec1913513781fe2b9df008b8251242b049a574b3e4b1a578001142"
+      "bytes": 6357,
+      "sha256": "c54456707b337371addd06719f21bcdce6fe844b2a8d2252c451a4210fb13093"
     },
     {
       "path": "manual-controls.mjs",
-      "bytes": 21493,
-      "sha256": "0cdeb59d14d792d4414940b80c3ae3a40720f7168c4a360d6f23b37e0b5f1461"
+      "bytes": 21901,
+      "sha256": "d47310bde2f25656493e97211308a4d4e997532cd68c6ff85574caafe5ebca53"
     },
     {
       "path": "manual-core.mjs",
@@ -386,6 +396,16 @@
       "sha256": "302c59aa0abff877bc3ead0772eb50ffd15f1632dfcb90916b0e6de8bd856a32"
     },
     {
+      "path": "quarry-closeup.mjs",
+      "bytes": 8864,
+      "sha256": "0d9f45c0f1cdf338084a8514c7a15fd76375c5c98d6c194936cce2aa471e38be"
+    },
+    {
+      "path": "quarry-contact-shadows.mjs",
+      "bytes": 1991,
+      "sha256": "8311f2dc5653107bfd4728e1450a113b45022c146a1d4bedcc6c7da752dd53b3"
+    },
+    {
       "path": "quarry-landscape.mjs",
       "bytes": 9387,
       "sha256": "2acd299475b373fc7fe261674aeb151d94b06d62633aac2e84993fd771a195d6"
@@ -402,8 +422,8 @@
     },
     {
       "path": "quarry-materials.mjs",
-      "bytes": 5623,
-      "sha256": "7383186975dcb3da5e7312afb9020863a7d3e43036d6ba335e958f864af72a28"
+      "bytes": 7110,
+      "sha256": "7827f87122d827c23f0e4ec8653716cca67a0660513724bfcae40f9635d66490"
     },
     {
       "path": "quarry-mine-connection.mjs",
@@ -422,13 +442,13 @@
     },
     {
       "path": "sarbay.html",
-      "bytes": 6390,
-      "sha256": "cc750af9df1a57a79d680c767c3a3faa7ba740b347024cdce77c48ed13c4012c"
+      "bytes": 6398,
+      "sha256": "8128d7f4b9ee2a2d48acaf2a98c3387d664bb3889f69fed588bb777d89173992"
     },
     {
       "path": "sokolov.html",
-      "bytes": 6392,
-      "sha256": "97898edfc5f10f52c697d4e4a9cae1d770786c53ad7197c9a0fe374618390c6e"
+      "bytes": 6400,
+      "sha256": "3317981228f4edcea8c336a0b6cc5178b7a59defc9a8d0543242e03bbc217f1c"
     },
     {
       "path": "stockpile-colliders.mjs",

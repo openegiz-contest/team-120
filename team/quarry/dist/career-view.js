@@ -5,8 +5,10 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {buildGraph,STATES} from './dispatch-core.mjs';
 import {CareerSimulation,ECONOMY} from './career-core.mjs';
 import {addQuarryLandscape,configureLandscapeCamera,containLandscapeCamera,createQuarryCameraGuard} from './quarry-landscape.mjs';
-import {loadQuarrySurfaceMaps,applyQuarrySurfaceMaterials} from './quarry-materials.mjs';
-import {createManualControls} from './manual-controls.mjs?v=stockpiles-1';
+import {loadQuarrySurfaceMaps,applyQuarrySurfaceMaterials} from './quarry-materials.mjs?v=closeup-1';
+import {createManualControls} from './manual-controls.mjs?v=closeup-1';
+import {createQuarryCloseup} from './quarry-closeup.mjs?v=closeup-1';
+import {enableVehicleShadows} from './quarry-contact-shadows.mjs?v=closeup-1';
 import {createTruckRunningGear} from './running-gear.mjs?v=2';
 import {createMineRide} from './mine-ride.mjs?v=network-1';
 import {createQuarryMineConnection} from './quarry-mine-connection.mjs?v=network-1';
@@ -41,12 +43,14 @@ let mine=null,mineWasPaused=true,mineWasFollowing=true,mineControlsEnabled=true;
 let mineConnection=null;
 let mapEnvironment=null;
 let mountainWorld=null;
+let closeupWorld=null;
 const matrix=new THREE.Matrix4(),up=new THREE.Vector3(0,1,0),projected=new THREE.Vector3();
 const cargoGeo=new THREE.BoxGeometry(4.5,.8,4.1),cargoMat=new THREE.MeshStandardMaterial({color:0x6c5a43,roughness:1});
 function save(){if(!sim)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(sim.snapshot()));storageOK=true}catch{storageOK=false}$('#save-status').textContent=storageOK?'✓ Прогресс сохранён на этом устройстве.':'Браузер не разрешил сохранение. Не закрывайте страницу, чтобы сохранить текущую игру.';lastRevision=sim.revision}
 function cameraOverview(){following=false;controls.target.set(0,85,0);camera.position.set(900,1100,1100);if(camera.aspect<1)camera.position.sub(controls.target).multiplyScalar(1.15/Math.max(.6,camera.aspect)).add(controls.target);controls.update();if(activeMap.id==='altai'){controls.target.set(-100,180,-100);camera.position.set(1500,1050,1800);camera.fov=64;camera.updateProjectionMatrix();if(camera.aspect<1)camera.position.sub(controls.target).multiplyScalar(1.1/Math.max(.65,camera.aspect)).add(controls.target);controls.update()}if(mountainWorld){const view=activeMap.rudny?rudnyOverview(activeMap.id,camera.aspect):mountainOverview(camera.aspect);controls.target.fromArray(view.target);camera.position.fromArray(view.position);camera.fov=view.fov;camera.updateProjectionMatrix();controls.update()}}
 function addPin(text,position,truckId=null){const b=document.createElement('button');b.className='map-pin'+(truckId?' truck':'');b.textContent=text;if(truckId){b.setAttribute('aria-label','Показать самосвал '+truckId);b.onclick=()=>{selected=truckId;following=true;updateUI()}}else{b.tabIndex=-1;b.style.pointerEvents='none'}$('#labels').append(b);pins.push({button:b,position,truckId})}
 function addVehicle(t){const group=new THREE.Group();group.add(truckAsset.clone(true));const cargo=new THREE.Mesh(cargoGeo,cargoMat);cargo.name='Truck cargo';cargo.position.set(-1.7,3.7,0);group.add(cargo);scene.add(group);vehicles.set(t.id,{group,cargo});addPin(t.id,null,t.id);
+  enableVehicleShadows(group);
   const row=document.createElement('button');row.className='truck-row';row.innerHTML='<b>'+t.id+'</b><div><strong></strong><small></small></div>';row.onclick=()=>{selected=t.id;following=true;updateUI()};$('#fleet').append(row);rows.set(t.id,row);
 }
 function syncAssets(){for(const t of sim.trucks)if(!vehicles.has(t.id))addVehicle(t);if(sim.excavators===2&&!secondExcavator){secondExcavator=excavatorAsset.clone(true);secondExcavator.position.z-=39;scene.add(secondExcavator)}}
@@ -85,9 +89,10 @@ function renderState(){syncAssets();
   for(const pin of pins){let p=pin.position;if(pin.truckId){const t=sim.trucks.find(t=>t.id===pin.truckId);p=vehicles.get(t.id).group.position.toArray();p[1]+=9;pin.button.classList.toggle('loaded',t.full);pin.button.classList.toggle('selected',t.id===selected)}else p=[p[0],p[1]+7,p[2]];projected.set(...p).project(camera);pin.button.hidden=projected.z<-1||projected.z>1||Math.abs(projected.x)>1||Math.abs(projected.y)>1;if(pin.button.hidden)continue;
     let x=(projected.x*.5+.5)*w,y=(-projected.y*.5+.5)*h;for(let i=0;i<4&&occupied.some(q=>Math.abs(q[0]-x)<50&&Math.abs(q[1]-y)<25);i++)y+=26;occupied.push([x,y]);pin.button.style.left=x+'px';pin.button.style.top=y+'px';
   }
+  closeupWorld?.update(camera,following?vehicles.get(selected)?.group:null);
   if(mineConnection)mineConnection.render(camera,mine?.scene,false);else renderer.render(scene,camera);
 }
-function frame(time){requestAnimationFrame(frame);const dt=previous?Math.min(.2,(time-previous)/1000):0;previous=time;mapEnvironment?.update(time,mine?.active?mine.camera:camera);mountainWorld?.update(time,mine?.active?mine.camera:camera);if(mine?.active){mine.step(dt);mineConnection.render(mine.camera,mine.scene,true)}else if(manual?.active){manual.step(dt);if(manual.cameraMode!=='cab'){guardQuarryCamera(camera,controls);mountainWorld?.guardCamera(camera)}mineConnection.render(camera,mine.scene,false)}else{sim.tick(dt*speed);renderState()}if(time-uiAt>160){uiAt=time;updateUI()}if(time-saveAt>2000){saveAt=time;save()}}
+function frame(time){requestAnimationFrame(frame);const dt=previous?Math.min(.2,(time-previous)/1000):0;previous=time;mapEnvironment?.update(time,mine?.active?mine.camera:camera);mountainWorld?.update(time,mine?.active?mine.camera:camera);if(mine?.active){closeupWorld?.update(camera,null);mine.step(dt);mineConnection.render(mine.camera,mine.scene,true)}else if(manual?.active){manual.step(dt);if(manual.cameraMode!=='cab'){guardQuarryCamera(camera,controls);mountainWorld?.guardCamera(camera)}closeupWorld?.update(camera,manual.subject);mineConnection.render(camera,mine.scene,false)}else{sim.tick(dt*speed);renderState()}if(time-uiAt>160){uiAt=time;updateUI()}if(time-saveAt>2000){saveAt=time;save()}}
 async function init(){
   const container=$('#career-canvas');renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(container.clientWidth,container.clientHeight);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;container.append(renderer.domElement);renderer.domElement.setAttribute('aria-label','3D-карьер: перетаскивайте для вращения');
   scene=new THREE.Scene();scene.add(new THREE.HemisphereLight(0xeaf0f5,0x8e8272,2.2));const key=new THREE.DirectionalLight(0xfff7e9,2.6);key.position.set(-500,1100,650);scene.add(key);const fill=new THREE.DirectionalLight(0xe3ecf3,.9);fill.position.set(650,450,-600);scene.add(fill);camera=new THREE.PerspectiveCamera(39,container.clientWidth/container.clientHeight,.1,10000);controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.minDistance=18;controls.maxDistance=3500;controls.maxPolarAngle=Math.PI*.48;cameraOverview();following=true;
@@ -114,6 +119,7 @@ async function init(){
     onExit:()=>{sim.paused=mineWasPaused;sim.accumulator=0;following=mineWasFollowing;controls.enabled=mineControlsEnabled;save();updateUI()}
   });
   mine.resize(container.clientWidth,container.clientHeight);
+  closeupWorld=createQuarryCloseup({THREE,scene,world:world.scene,renderer,heightAt:manual.heightAt,route:route.samples,surfaces});
   const sceneryButton=document.createElement('button');sceneryButton.id='landscape-view';sceneryButton.textContent='△ Рельеф';sceneryButton.title='Ущелье и водопад';
   if(activeMap.rudny){sceneryButton.textContent='△ Вся карта';sceneryButton.title='Карьер и промышленные отвалы'}
   sceneryButton.onclick=()=>{following=false;const view=activeMap.rudny?rudnyOverview(activeMap.id,camera.aspect,true):mountainSceneryView(camera.aspect);controls.target.fromArray(view.target);camera.position.fromArray(view.position);camera.fov=view.fov;camera.updateProjectionMatrix();controls.update()};

@@ -50,3 +50,22 @@ test('empty truck accelerates faster and reaches 55 km/h, loaded truck is limite
   const speed=empty.speed;empty.setPayload(true);assert.equal(empty.speed,speed);empty.step(.1,{throttle:1},()=>0);assert.ok(empty.speed<speed&&empty.speed>speed-.2);
   for(let i=0;i<120;i++)full.step(1/60,{brake:true},()=>0);assert.equal(full.speed,0);
 });
+
+test('driving framing has its own lens and restores the overview after cab and vehicle changes',()=>{
+  const {camera,controls,session,rig}=fixture();rig.useDrivingFraming();
+  assert.equal(camera.fov,46);assert.ok(camera.position.distanceTo(controls.target)<22);
+  rig.setMode('cab');assert.equal(camera.fov,72);
+  const excavator={kind:'excavator',mesh:new THREE.Group(),drive:{yaw:1},rig:{frames:{}}};
+  rig.select(excavator);assert.equal(camera.fov,72);rig.setMode('follow');assert.equal(camera.fov,49);
+  rig.select(session);assert.equal(camera.fov,46);rig.end();assert.equal(camera.fov,39);assert.equal(camera.near,2);
+  assert.deepEqual(camera.position.toArray(),[900,1100,1100]);assert.deepEqual(controls.target.toArray(),[0,85,0]);
+});
+
+test('truck framing fits the full chassis on desktop and phone with room around it',()=>{
+  for(const aspect of [1.6,390/372]){
+    const {camera,controls,rig}=fixture();camera.aspect=aspect;controls.update=()=>camera.lookAt(controls.target);rig.useDrivingFraming();
+    const corners=[];for(const x of [-5.8,5.8])for(const y of [0,6.2])for(const z of [-3.2,3.2])corners.push(new THREE.Vector3(x,y,z).project(camera));
+    assert.ok(corners.every(p=>Math.abs(p.x)<.88&&Math.abs(p.y)<.78&&p.z<1),'vehicle clipped at aspect '+aspect);
+    assert.ok(Math.max(...corners.map(p=>p.y))-Math.min(...corners.map(p=>p.y))>.55,'vehicle too small');rig.end();
+  }
+});

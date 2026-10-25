@@ -1,8 +1,14 @@
 import * as THREE from './vendor/three/build/three.module.js';
 
+export function manualViewPreset(kind,aspect){
+  const narrow=aspect<.9?Math.min(1.2,.9/Math.max(.6,aspect)):1;
+  return {offset:(kind==='excavator'?[-17,8.5,12.2]:[-15.2,8.2,10.8]).map(v=>v*narrow),fov:kind==='excavator'?49:46,cabFov:72};
+}
+
 // Manual cameras own their target: dragging changes the orbit, never the followed vehicle.
 export function createManualCamera(camera,controls){
   let session=null,mode='follow',saved=null,lookYaw=0,lookPitch=-.16;
+  let drivingFraming=false;
   const orbit=new THREE.Vector3(),focus=new THREE.Vector3(),q=new THREE.Quaternion();
   const keys=['enabled','enablePan','enableDamping','minDistance','maxDistance','minPolarAngle','maxPolarAngle'];
   function begin(){
@@ -13,14 +19,16 @@ export function createManualCamera(camera,controls){
   function getFocus(){return session.mesh.localToWorld(focus.set(session.kind==='excavator'?1.5:0,2,0))}
   function select(next){
     session=next;lookYaw=0;lookPitch=-.16;
-    orbit.set(-18,11,14).applyAxisAngle(new THREE.Vector3(0,1,0),session.drive.yaw);
-    if(camera.aspect<1)orbit.multiplyScalar(1.25);
+    const preset=drivingFraming?manualViewPreset(session.kind,camera.aspect):null;
+    orbit.fromArray(preset?.offset||[-18,11,14]).applyAxisAngle(new THREE.Vector3(0,1,0),session.drive.yaw);
+    if(!preset&&camera.aspect<1)orbit.multiplyScalar(1.25);
     configure();
   }
   function configure(){
     if(!session)return;
     controls.enabled=mode==='follow';camera.up.set(0,1,0);
-    camera.near=mode==='cab'?.05:saved.near;camera.fov=mode==='cab'?80:saved.fov;camera.updateProjectionMatrix();
+    const preset=drivingFraming?manualViewPreset(session.kind,camera.aspect):null;
+    camera.near=mode==='cab'?.05:saved.near;camera.fov=mode==='cab'?(preset?.cabFov||80):(preset?.fov||saved.fov);camera.updateProjectionMatrix();
     if(mode==='follow'){controls.target.copy(getFocus());camera.position.copy(focus).add(orbit);controls.update()}
     update();
   }
@@ -44,7 +52,7 @@ export function createManualCamera(camera,controls){
     }
     camera.updateMatrixWorld();
   }
-  return {begin,select,setMode,update,get mode(){return mode},look(dx,dy){
+  return {begin,select,setMode,update,useDrivingFraming(){drivingFraming=true;if(session)select(session)},get mode(){return mode},look(dx,dy){
     lookYaw=THREE.MathUtils.clamp(lookYaw-dx*.004,-1.8,1.8);lookPitch=THREE.MathUtils.clamp(lookPitch-dy*.004,-.9,.65);update();
   },end(){
     if(!saved)return;session=null;Object.assign(controls,saved.controls);camera.near=saved.near;camera.fov=saved.fov;camera.up.copy(saved.up);camera.position.copy(saved.position);controls.target.copy(saved.target);camera.updateProjectionMatrix();controls.update();saved=null;mode='follow';

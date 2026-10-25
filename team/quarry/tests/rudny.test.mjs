@@ -7,6 +7,7 @@ import {installRudnyTerrain,rudnyOverview,RUDNY_MAPS} from '../dist/rudny-maps.m
 import {createSurfaceSampler} from '../dist/manual-controls.mjs';
 import {buildGraph} from '../dist/dispatch-core.mjs';
 import {CareerSimulation} from '../dist/career-core.mjs';
+import {planQuarryScree} from '../dist/quarry-closeup.mjs';
 
 const base=new URL('../dist/assets/rudny/',import.meta.url);
 const json=name=>JSON.parse(fs.readFileSync(new URL(name,base)));
@@ -46,6 +47,13 @@ for(const kind of ['sarbay','sokolov']){
   });
   test(kind+': tutorial completes an ore delivery on its independent graph',()=>{
     const sim=new CareerSimulation(buildGraph(route,design));sim.tutorialAction();for(let i=0;i<200;i++)sim.tick(.1);assert.equal(sim.stage,'haul');sim.tutorialAction();for(let i=0;i<16000&&sim.deliveries<1;i++)sim.tick(.1);assert.equal(sim.deliveries,1);assert.equal(sim.wallet,100);
+  });
+  test(kind+': decorative scree stays on benches outside the road and mine approach',()=>{
+    const rows=planQuarryScree(asset.sample,route.samples);assert.ok(rows.length>0&&rows.length<=750);
+    for(const [x,y,z,,height] of rows){
+      assert.ok(Math.abs(y-asset.sample(x,z)-.035)<1e-6);assert.ok(height<=.08);assert.ok(!(x>10&&x<75&&z>-175&&z<-65));
+      for(let i=1;i<route.samples.length;i++){const a=route.samples[i-1],b=route.samples[i],dx=b[1]-a[1],dz=b[3]-a[3],t=Math.max(0,Math.min(1,((x-a[1])*dx+(z-a[3])*dz)/(dx*dx+dz*dz||1)));assert.ok(Math.hypot(x-a[1]-t*dx,z-a[3]-t*dz)>=24)}
+    }
   });
 }
 

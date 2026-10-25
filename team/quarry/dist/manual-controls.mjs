@@ -1,7 +1,8 @@
 import * as THREE from './vendor/three/build/three.module.js';
 import {ManualDrive,groundPose} from './manual-core.mjs?v=5';
 import {createManualWorksite} from './manual-worksite.mjs?v=5';
-import {createManualCamera} from './manual-camera.mjs?v=3';
+import {createManualCamera} from './manual-camera.mjs?v=closeup-1';
+import {createVehicleContactShadow,enableVehicleShadows} from './quarry-contact-shadows.mjs?v=closeup-1';
 import {createExcavatorRig} from './excavator-rig.mjs?v=4';
 import {createTruckRunningGear,createCrawlerRunningGear} from './running-gear.mjs?v=2';
 import {createStockpileBlockers} from './stockpile-colliders.mjs?v=1';
@@ -61,6 +62,7 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
   blockers.push(...createStockpileBlockers(world));
   let active=false,selected=null,uiTime=0,lookPointer=null,worksite=null,noticeTime=0;
   const manualCamera=createManualCamera(camera,controls);
+  manualCamera.useDrivingFraming();
   const sessions=new Map(),keyboard=new Set(),pointers=new Map(),up=new THREE.Vector3(0,1,0),basis=new THREE.Matrix4();
   function clearInput(){keyboard.clear();pointers.clear();document.querySelectorAll('[data-drive]').forEach(b=>b.classList.remove('pressed'));if(selected)selected.drive.speed=0}
   function input(){const held=new Set([...keyboard,...pointers.values()]);const axis=(a,b)=>(held.has(a)?1:0)-(held.has(b)?1:0);return {throttle:axis('forward','back'),turn:axis('left','right'),brake:held.has('brake'),slew:axis('slewLeft','slewRight'),boom:axis('boomUp','boomDown'),stick:axis('stickOut','stickIn'),bucket:axis('bucketOut','bucketIn')}}
@@ -69,17 +71,20 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
     const side=new THREE.Vector3().crossVectors(forward,up).normalize();side.y=Math.tan(d.roll);side.normalize();
     const normal=new THREE.Vector3().crossVectors(side,forward).normalize();side.crossVectors(forward,normal).normalize();basis.makeBasis(forward,normal,side);
     session.mesh.position.set(d.x,d.y,d.z);session.mesh.quaternion.setFromRotationMatrix(basis);session.mesh.updateMatrixWorld(true);
+    session.contactShadow?.update();
   }
   function select(id){
     clearInput();worksite?.clearShake(camera);const item=getFleet().find(v=>v.id===id);if(!item)return;
     if(!sessions.has(id)){
       item.object.updateWorldMatrix(true,true);const mesh=item.object.clone(true),p=new THREE.Vector3(),q=new THREE.Quaternion(),scale=new THREE.Vector3();item.object.matrixWorld.decompose(p,q,scale);
       mesh.position.copy(p);mesh.quaternion.copy(q);mesh.scale.copy(scale);mesh.visible=true;scene.add(mesh);
+      enableVehicleShadows(mesh);
       const direction=new THREE.Vector3(1,0,0).applyQuaternion(q),yaw=Math.atan2(-direction.z,direction.x);
       const drive=new ManualDrive(item.kind,p.toArray(),yaw),pose=groundPose(p.x,p.z,yaw,item.kind,sample);if(pose)Object.assign(drive,{y:pose.height,pitch:pose.pitch,roll:pose.roll});
       const session={...item,mesh,drive,initial:{position:p.toArray(),yaw},visible:item.object.visible,rig:item.kind==='excavator'?createExcavatorRig(mesh):null,gear:item.kind==='excavator'?createCrawlerRunningGear(mesh):createTruckRunningGear(mesh)};
       if(item.kind==='truck'){drive.setPayload(item.full);const cargo=mesh.getObjectByName('Truck cargo');if(cargo){cargo.visible=!!item.full;cargo.scale.y=1}}
       sessions.set(id,session);item.object.visible=false;orient(session);
+      session.contactShadow=createVehicleContactShadow(THREE,scene,mesh,item.kind,worksite.surface);
       worksite.attach(session);session.rig?.setContactCheck(()=>worksite.armClear(session));
     }
     selected=sessions.get(id);
@@ -99,7 +104,7 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
     for(const v of getFleet())select(v.id);worksite.start();select(getFleet().find(v=>v.kind===kind)?.id);window.scrollTo({top:0,behavior:'instant'});
   }
   function exit(){
-    if(!active)return;clearInput();for(const s of sessions.values()){s.object.visible=s.visible;scene.remove(s.mesh);s.rig?.dispose();s.gear?.dispose()}
+    if(!active)return;clearInput();for(const s of sessions.values()){s.object.visible=s.visible;scene.remove(s.mesh);s.rig?.dispose();s.gear?.dispose();s.contactShadow?.dispose()}
     worksite.dispose();worksite=null;manualCamera.end();lookPointer=null;sessions.clear();selected=null;active=false;document.body.classList.remove('manual-active');entry.hidden=false;panel.hidden=true;hud.hidden=true;onExit();
   }
   function moveCamera(alpha){
@@ -150,7 +155,7 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
     for(const event of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(event,e=>{pointers.delete(e.pointerId);b.classList.remove('pressed')});
     b.addEventListener('contextmenu',e=>e.preventDefault());
   }
-  return {get active(){return active},get cameraMode(){return manualCamera.mode},exit,step(dt){
+  return {get active(){return active},get cameraMode(){return manualCamera.mode},get subject(){return selected?.mesh||null},heightAt:sample,exit,step(dt){
     if(!active||!selected||document.hidden)return;
     worksite.clearShake(camera);
     const keys=input(),before={...selected.drive};let contact=null;
