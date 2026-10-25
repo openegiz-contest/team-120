@@ -9,6 +9,7 @@ export function manualViewPreset(kind,aspect){
 export function createManualCamera(camera,controls){
   let session=null,mode='follow',saved=null,lookYaw=0,lookPitch=-.16;
   let drivingFraming=false;
+  let inspection=null;
   const orbit=new THREE.Vector3(),focus=new THREE.Vector3(),q=new THREE.Quaternion();
   const keys=['enabled','enablePan','enableDamping','minDistance','maxDistance','minPolarAngle','maxPolarAngle'];
   function begin(){
@@ -18,6 +19,7 @@ export function createManualCamera(camera,controls){
   }
   function getFocus(){return session.mesh.localToWorld(focus.set(session.kind==='excavator'?1.5:0,2,0))}
   function select(next){
+    inspection=null;
     session=next;lookYaw=0;lookPitch=-.16;
     const preset=drivingFraming?manualViewPreset(session.kind,camera.aspect):null;
     orbit.fromArray(preset?.offset||[-18,11,14]).applyAxisAngle(new THREE.Vector3(0,1,0),session.drive.yaw);
@@ -34,12 +36,14 @@ export function createManualCamera(camera,controls){
   }
   function setMode(next){
     if(!session)return;
-    if(mode==='follow')orbit.subVectors(camera.position,controls.target);
+    if(mode==='follow'&&!inspection)orbit.subVectors(camera.position,controls.target);
+    inspection=null;
     mode=next==='cab'?'cab':'follow';lookYaw=0;lookPitch=-.16;configure();
   }
   function update(){
     if(!session)return;
     session.mesh.updateWorldMatrix(true,true);
+    if(inspection){controls.target.copy(inspection);controls.update();camera.updateMatrixWorld();return}
     if(mode==='follow'){
       // Apply the exact displacement, including while OrbitControls is dragging.
       getFocus();camera.position.add(new THREE.Vector3().subVectors(focus,controls.target));controls.target.copy(focus);controls.update();
@@ -52,9 +56,19 @@ export function createManualCamera(camera,controls){
     }
     camera.updateMatrixWorld();
   }
-  return {begin,select,setMode,update,useDrivingFraming(){drivingFraming=true;if(session)select(session)},get mode(){return mode},look(dx,dy){
+  function stopInspection(){if(inspection){inspection=null;configure()}}
+  function inspectRockfall(hazard){
+    if(!session||!hazard.position||!hazard.source)return false;
+    if(!inspection&&mode==='follow')orbit.subVectors(camera.position,controls.target);
+    const p=hazard.position,s=hazard.source,dx=s.x-p.x,dz=s.z-p.z,length=Math.hypot(dx,dz)||1,scale=camera.aspect<.9?1.2:1;
+    inspection=new THREE.Vector3((p.x+s.x)*.5,p.y+(s.y-p.y)*.45,(p.z+s.z)*.5);
+    camera.position.set(inspection.x+(-dx/length*22-dz/length*32)*scale,inspection.y+28*scale,inspection.z+(-dz/length*22+dx/length*32)*scale);
+    camera.up.set(0,1,0);camera.near=.1;camera.fov=52;camera.updateProjectionMatrix();controls.enabled=true;update();return true;
+  }
+  return {begin,select,setMode,update,inspectRockfall,stopInspection,get inspecting(){return !!inspection},useDrivingFraming(){drivingFraming=true;if(session)select(session)},get mode(){return mode},look(dx,dy){
+    if(inspection)return;
     lookYaw=THREE.MathUtils.clamp(lookYaw-dx*.004,-1.8,1.8);lookPitch=THREE.MathUtils.clamp(lookPitch-dy*.004,-.9,.65);update();
   },end(){
-    if(!saved)return;session=null;Object.assign(controls,saved.controls);camera.near=saved.near;camera.fov=saved.fov;camera.up.copy(saved.up);camera.position.copy(saved.position);controls.target.copy(saved.target);camera.updateProjectionMatrix();controls.update();saved=null;mode='follow';
+    if(!saved)return;inspection=null;session=null;Object.assign(controls,saved.controls);camera.near=saved.near;camera.fov=saved.fov;camera.up.copy(saved.up);camera.position.copy(saved.position);controls.target.copy(saved.target);camera.updateProjectionMatrix();controls.update();saved=null;mode='follow';
   }};
 }

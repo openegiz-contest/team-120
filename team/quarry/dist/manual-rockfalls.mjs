@@ -32,9 +32,11 @@ export function createRockfalls({root,sample,occupied,onNotice,route=[]}){
   const geometry=new THREE.DodecahedronGeometry(1,0),material=new THREE.MeshStandardMaterial({color:0x756c5b,roughness:1,flatShading:true});
   const markerGeometry=new THREE.RingGeometry(5.5,5.75,48),markerMaterial=new THREE.MeshBasicMaterial({color:0xe9a341,transparent:true,opacity:.8,side:THREE.DoubleSide,depthWrite:false});
   const marker=new THREE.Mesh(markerGeometry,markerMaterial);marker.rotation.x=-Math.PI/2;marker.visible=false;group.add(marker);
+  const safetyGeometry=new THREE.RingGeometry(12.8,13,64),safetyMaterial=markerMaterial.clone(),safetyMarker=new THREE.Mesh(safetyGeometry,safetyMaterial);safetyMarker.rotation.x=-Math.PI/2;safetyMarker.visible=false;safetyMarker.name='Rockfall / keep-clear boundary';group.add(safetyMarker);
   const dustGeometry=new THREE.IcosahedronGeometry(1,1),dustMaterial=new THREE.MeshBasicMaterial({color:0xb3a38a,transparent:true,opacity:0,depthWrite:false});
   const dust=new THREE.InstancedMesh(dustGeometry,dustMaterial,16);dust.visible=false;dust.frustumCulled=false;group.add(dust);
   const dummy=new THREE.Object3D(),rocks=[];
+  const precursors=new THREE.InstancedMesh(dustGeometry,material,18);precursors.name='Rockfall / warning fragments';precursors.visible=false;precursors.frustumCulled=false;precursors.castShadow=true;group.add(precursors);
   let phase='idle',site=null,timer=0,age=0,cooldown=90,focus=null,automatic=true,dustAge=10,added=0;
   function radius(rock){return Math.cbrt(rock.volume)*.75}
   function request(s){
@@ -47,6 +49,8 @@ export function createRockfalls({root,sample,occupied,onNotice,route=[]}){
     const vertices=markerGeometry.attributes.position;
     for(let i=0;i<vertices.count;i++){const height=sample(site.x+vertices.getX(i),site.z-vertices.getY(i));vertices.setZ(i,(Number.isFinite(height)?height:site.y)-site.y)}
     vertices.needsUpdate=true;markerGeometry.computeBoundingSphere();
+    safetyMarker.position.copy(marker.position);safetyMarker.visible=true;const boundary=safetyGeometry.attributes.position;
+    for(let i=0;i<boundary.count;i++){const h=sample(site.x+boundary.getX(i),site.z-boundary.getY(i));boundary.setZ(i,(Number.isFinite(h)?h:site.y)-site.y)}boundary.needsUpdate=true;safetyGeometry.computeBoundingSphere();
     onNotice('Камнепад через 6 секунд! Остановитесь перед оранжевой зоной.');return true;
   }
   function beginFall(){
@@ -58,6 +62,7 @@ export function createRockfalls({root,sample,occupied,onNotice,route=[]}){
       const targetY=sample(x,z)+r*.8,from={x:site.source.x+site.tx*along,y:site.source.y+(i%3)*.3,z:site.source.z+site.tz*along};
       const duration=Math.sqrt(2*(from.y-targetY)/9.81),rock={mesh,volume,x,z,y:targetY,from,duration,delay:i*.065,settled:false};
       mesh.position.set(from.x,from.y,from.z);mesh.scale.set(r,r*.8,r);group.add(mesh);rocks.push(rock);added+=volume;
+      mesh.castShadow=true;mesh.receiveShadow=true;
     }
     onNotice('Камни падают на дорогу. Дождитесь окончания камнепада.');
   }
@@ -103,11 +108,25 @@ export function createRockfalls({root,sample,occupied,onNotice,route=[]}){
       if(rocks.every(r=>r.settled)&&age>Math.max(...rocks.map(r=>r.duration+r.delay))+.7){phase='blocked';for(const r of rocks)r.mesh.position.set(r.x,r.y,r.z);onNotice('Дорога завалена. Подберите камни экскаватором: Y, затем выгрузите H.');}
     }
     markerMaterial.opacity=.55+.25*Math.sin(age*5);markerMaterial.color.set(phase==='blocked'?0xd16d37:0xe9a341);
+    safetyMarker.visible=phase==='warning'||phase==='falling';safetyMaterial.opacity=.3+.1*Math.sin(age*5);
+    precursors.visible=phase==='warning';
+    if(precursors.visible){
+      const dx=site.x-site.source.x,dz=site.z-site.source.z,length=Math.hypot(dx,dz)||1;
+      for(let i=0;i<18;i++){
+        const cycle=(age*.6+i*.137)%1,along=Math.sin(i*2.4)*2.4,drop=Math.min(2.8,(site.source.y-site.y)*.32)*cycle*cycle;
+        dummy.position.set(site.source.x+site.tx*along+dx/length*(.3+cycle*.45),site.source.y-drop,site.source.z+site.tz*along+dz/length*(.3+cycle*.45));
+        dummy.rotation.set(age*2+i,i*.7,age+i);dummy.scale.setScalar(.04+(i%4)*.018);dummy.updateMatrix();precursors.setMatrixAt(i,dummy.matrix);
+      }precursors.instanceMatrix.needsUpdate=true;
+    }
     dustAge+=dt;dust.visible=dustAge<3;
     if(dust.visible){dustMaterial.opacity=.12*(1-dustAge/3);for(let i=0;i<16;i++){const a=i*2.4;dummy.position.set(site.x+Math.cos(a)*(1+dustAge)*2,site.y+.5+dustAge*.6,site.z+Math.sin(a)*(1+dustAge)*2);dummy.scale.setScalar(.6+dustAge*.4);dummy.updateMatrix();dust.setMatrixAt(i,dummy.matrix)}dust.instanceMatrix.needsUpdate=true}
+    if(phase==='warning'){
+      dust.visible=true;dustMaterial.opacity=.08;
+      for(let i=0;i<16;i++){const t=(age*.3+i*.17)%1,a=i*2.4;dummy.position.set(site.source.x+site.tx*Math.cos(a)*2,site.source.y+.2-t,site.source.z+site.tz*Math.cos(a)*2);dummy.scale.setScalar(.35+t*.7);dummy.updateMatrix();dust.setMatrixAt(i,dummy.matrix)}dust.instanceMatrix.needsUpdate=true;
+    }
   }
   return {request,step,collision,dig,focus(s){focus=s},setAutomatic(value){automatic=!!value},
-    report(){return {phase,seconds:Math.ceil(timer),remaining:rocks.reduce((sum,r)=>sum+r.volume,0),added,position:site?{x:site.x,y:site.y,z:site.z}:null}},
-    dispose(){geometry.dispose();material.dispose();markerGeometry.dispose();markerMaterial.dispose();dustGeometry.dispose();dustMaterial.dispose();dust.dispose();root.remove(group)}
+    report(){return {phase,seconds:Math.ceil(timer),remaining:rocks.reduce((sum,r)=>sum+r.volume,0),added,position:site?{x:site.x,y:site.y,z:site.z}:null,source:site?{...site.source}:null,waitingForClearance:phase==='warning'&&timer===0}},
+    dispose(){geometry.dispose();material.dispose();markerGeometry.dispose();markerMaterial.dispose();safetyGeometry.dispose();safetyMaterial.dispose();dustGeometry.dispose();dustMaterial.dispose();dust.dispose();precursors.dispose();root.remove(group)}
   };
 }

@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three/build/three.module.js';
 import {ManualDrive,groundPose} from './manual-core.mjs?v=5';
-import {createManualWorksite} from './manual-worksite.mjs?v=5';
-import {createManualCamera} from './manual-camera.mjs?v=closeup-1';
+import {createManualWorksite} from './manual-worksite.mjs?v=rockfall-2';
+import {createManualCamera} from './manual-camera.mjs?v=rockfall-2';
 import {createVehicleContactShadow,enableVehicleShadows} from './quarry-contact-shadows.mjs?v=closeup-1';
 import {createExcavatorRig} from './excavator-rig.mjs?v=4';
 import {createTruckRunningGear,createCrawlerRunningGear} from './running-gear.mjs?v=2';
@@ -55,6 +55,8 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
   document.querySelector('.world').append(hud);
   const notice=document.createElement('output');notice.className='manual-impact-notice';notice.setAttribute('aria-live','polite');hud.append(notice);
   const hazardBadge=document.createElement('output');hazardBadge.className='manual-hazard-badge';hazardBadge.hidden=true;hud.append(hazardBadge);
+  const hazardTools=document.createElement('div');hazardTools.className='manual-hazard-tools';hud.append(hazardTools);hazardTools.append(hazardBadge);
+  const hazardView=document.createElement('button');hazardView.type='button';hazardView.className='manual-hazard-view';hazardView.textContent='Показать обвал';hazardView.hidden=true;hazardTools.append(hazardView);
   const meshList=[];world.traverse(o=>{if(o.userData.asset_id==='GEO_001')o.traverse(m=>{if(m.isMesh)meshList.push(m)})});
   scene.traverse(o=>{if(o.name==='Continuous land outside quarry')meshList.push(o)});
   const sample=createSurfaceSampler(meshList),blockers=[];
@@ -120,11 +122,12 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
     if(selected.rig){const degrees=r=>Math.round(((THREE.MathUtils.radToDeg(r)%360)+360)%360);panel.querySelector('#manual-joints').textContent+=' · Платформа '+degrees(selected.rig.state.slew)+'° · Ходовая '+degrees(selected.drive.yaw)+'°';if(selected.loadingTarget&&r.bucket>.05)panel.querySelector('#manual-dig-guide').textContent='Зелёная метка: ковш над '+selected.loadingTarget+'. H — открыть и высыпать руду.'}
     if(selected.armContact&&selected.armBlocked)panel.querySelector('#manual-state').textContent='Гидравлика в упоре · поворот остановлен';
     const hazard=worksite.rockfallReport(),distance=hazard.position?Math.round(Math.hypot(selected.drive.x-hazard.position.x,selected.drive.z-hazard.position.z)):0;
-    const status=hazard.phase==='warning'?(hazard.seconds?`Камнепад через ${hazard.seconds} с · ${distance} м`:'Освободите оранжевую зону: обвал задержан'):hazard.phase==='falling'?`Камнепад · остановитесь · ${distance} м`:hazard.phase==='blocked'?`Завал · ${(hazard.remaining*2.2).toFixed(1)} т · ${distance} м`:hazard.phase==='cleared'?'Завал расчищен · проезд открыт':'Дорога свободна';
+    const status=hazard.phase==='warning'?(hazard.seconds?`Камнепад через ${hazard.seconds} с · ${distance} м`:'Обвал ждёт: отъедьте от оранжевой зоны'):hazard.phase==='falling'?`Камнепад · остановитесь · ${distance} м`:hazard.phase==='blocked'?`Завал · ${(hazard.remaining*2.2).toFixed(1)} т · ${distance} м`:hazard.phase==='cleared'?'Завал расчищен · проезд открыт':'Дорога свободна';
     panel.querySelector('#manual-rockfall-status').textContent=status;panel.querySelector('#manual-rockfall-trigger').disabled=!['idle','cleared'].includes(hazard.phase);
     const bearing=hazard.position?Math.atan2(-(hazard.position.z-selected.drive.z),hazard.position.x-selected.drive.x)-selected.drive.yaw:0,angle=Math.atan2(Math.sin(bearing),Math.cos(bearing));
     const direction=Math.abs(angle)<.5?'↑ впереди':Math.abs(angle)>2.65?'↓ сзади':angle>0?'← слева':'→ справа';
     hazardBadge.textContent=status+(hazard.position?' · '+direction:'');hazardBadge.hidden=['idle','cleared'].includes(hazard.phase);hazardBadge.dataset.phase=hazard.phase;
+    hazardView.hidden=hazardBadge.hidden;hazardView.textContent=manualCamera.inspecting?'Вернуться к технике':hazard.phase==='blocked'?'Показать завал':'Показать обвал';hazardView.setAttribute('aria-pressed',String(manualCamera.inspecting));
   }
   function updateTelemetry(){if(!selected)return;document.querySelector('#manual-speed').innerHTML=Math.abs(selected.drive.speed*3.6).toFixed(0)+' <small>км/ч</small>';document.querySelector('#manual-state').textContent=selected.drive.blocked?'Край, крутой склон или препятствие':selected.armBlocked?'Ковш упирается в грунт':Math.abs(selected.drive.speed)>.1?(selected.drive.speed>0?'Передний ход':'Задний ход'):'Готов к движению';const out=document.querySelector('#manual-joints');out.hidden=!selected.rig;if(selected.rig)out.textContent=['boom','stick','bucket'].map((key,i)=>['Стрела','Рукоять','Ковш'][i]+' '+Math.round(THREE.MathUtils.radToDeg(selected.rig.state[key]))+'°').join(' · ')}
   entry.querySelectorAll('[data-start]').forEach(b=>{b.onclick=()=>enter(b.dataset.start)});
@@ -135,6 +138,7 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
   document.querySelector('#manual-prepare').onclick=()=>{clearInput();const id=worksite.prepare();if(id)select(id)};
   panel.querySelector('#manual-rockfall-trigger').onclick=()=>{if(selected){worksite.requestRockfall(selected);updateWorksiteUI()}};
   panel.querySelector('#manual-rockfall-auto').onchange=e=>worksite?.setAutomaticRockfalls(e.target.checked);
+  hazardView.onclick=()=>{clearInput();worksite?.clearShake(camera);if(manualCamera.inspecting)manualCamera.stopInspection();else manualCamera.inspectRockfall(worksite.rockfallReport());updateWorksiteUI()};
   panel.querySelectorAll('[data-payload]').forEach(b=>{b.onclick=()=>{
     if(!selected||selected.kind!=='truck'||Math.abs(selected.drive.speed)>.1)return;
     worksite.setCargo(selected,b.dataset.payload==='1');updateTelemetry();updateWorksiteUI();
@@ -159,6 +163,7 @@ export function createManualControls({scene,camera,controls,world,getFleet,onEnt
     if(!active||!selected||document.hidden)return;
     worksite.clearShake(camera);
     const keys=input(),before={...selected.drive};let contact=null;
+    if(Object.values(keys).some(Boolean))manualCamera.stopInspection();
     const driving=selected.physics.lock>0||selected.physics.damage>=100?{brake:true}:keys;
     selected.drive.step(dt,driving,worksite.surface,(x,z,yaw)=>{contact=worksite.collision(selected,x,z,yaw);return !!contact});
     if(contact)worksite.impact(selected,contact,selected.drive.contactSpeed);

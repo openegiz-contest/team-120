@@ -57,3 +57,13 @@ test('worksite bucket collects rubble within capacity and collision blocks a dri
   assert.ok(Math.abs(s.bucketOre-1.2)<1e-8);assert.ok(Math.abs(site.inventory().loose+s.bucketOre-initial)<1e-8);assert.ok(site.rockfallReport().remaining>0);
   site.dispose();s.rig.dispose();
 });
+
+test('warning fragments remain animated during a safety hold without adding collectible rubble',()=>{
+  let occupied=false;const {falls,root}=setup(()=>occupied);falls.request({drive});occupied=true;advance(falls,8);
+  const report=falls.report(),fragments=root.getObjectByName('Rockfall / warning fragments'),boundary=root.getObjectByName('Rockfall / keep-clear boundary');
+  assert.equal(report.phase,'warning');assert.equal(report.waitingForClearance,true);assert.ok(report.source.y>report.position.y);assert.equal(report.remaining,0);assert.equal(report.added,0);assert.equal(fragments.visible,true);assert.equal(boundary.visible,true);
+  const before=fragments.instanceMatrix.array.slice();advance(falls,.3);assert.notDeepEqual(fragments.instanceMatrix.array,before);assert.equal(falls.collision(vehicle(report.position)),null);
+  report.source.y=-100;assert.ok(falls.report().source.y>0,'reports must not expose mutable internal site data');
+  occupied=false;advance(falls,.1);assert.equal(falls.report().phase,'falling');assert.equal(fragments.visible,false);assert.ok(falls.report().remaining>0);advance(falls,5);assert.equal(boundary.visible,false);
+  falls.dispose();
+});

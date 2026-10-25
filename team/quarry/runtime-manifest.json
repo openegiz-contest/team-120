@@ -12,8 +12,8 @@
     },
     {
       "path": "altai.html",
-      "bytes": 6423,
-      "sha256": "daa04d3d584a922ca1e42c7adaf93d6f9d5a213af20bc5ebd04ede303d51f71c"
+      "bytes": 6425,
+      "sha256": "57fb2eaf9d232555a7baf8f65aefd677bd9510dff48b362cebf551b36fc92ed8"
     },
     {
       "path": "assets/excavator-preview.png",
@@ -257,8 +257,8 @@
     },
     {
       "path": "career-view.js",
-      "bytes": 24332,
-      "sha256": "01900c6a4818b67b06b1a32539568db66cd1775ac0778c71d0ac55b925aaea52"
+      "bytes": 24333,
+      "sha256": "99ce36e2b1b09de30730ce30fe1ce05f52e155fc281da0bff9657697777ea8ba"
     },
     {
       "path": "career.css",
@@ -267,8 +267,8 @@
     },
     {
       "path": "career.html",
-      "bytes": 6397,
-      "sha256": "9e5040e0a5d7c86f22c14030a6cb24784a3352a9dacba7544f9cfc2c5ff420aa"
+      "bytes": 6399,
+      "sha256": "13b6873c4ebdde3a0ed90694f63fa8b8e63b9c90fd07c356bd79dbae8b8e23ba"
     },
     {
       "path": "dispatch-core.mjs",
@@ -312,18 +312,18 @@
     },
     {
       "path": "manual-camera.mjs",
-      "bytes": 3771,
-      "sha256": "68f7aa7dff385d2f0936b6c0f9758859791b5c49b9d5fb63e03355203f1495ac"
+      "bytes": 4806,
+      "sha256": "2e5552520c276f16fb8904f23e03335edc67260d89318a6d4f4678bae8f37a48"
     },
     {
       "path": "manual-controls.css",
-      "bytes": 6357,
-      "sha256": "c54456707b337371addd06719f21bcdce6fe844b2a8d2252c451a4210fb13093"
+      "bytes": 7062,
+      "sha256": "b53ce29d1517aff3f5b9ab0c28fbf1123b6b595c6e16ec92dedd4f3758bff668"
     },
     {
       "path": "manual-controls.mjs",
-      "bytes": 21901,
-      "sha256": "d47310bde2f25656493e97211308a4d4e997532cd68c6ff85574caafe5ebca53"
+      "bytes": 22846,
+      "sha256": "effb9f41a6a03b68451de16a1997c9539cc7afe0b3bf69458d7db0d55559d031"
     },
     {
       "path": "manual-core.mjs",
@@ -337,13 +337,13 @@
     },
     {
       "path": "manual-rockfalls.mjs",
-      "bytes": 7802,
-      "sha256": "96e7c3b8f30bdac40e294d8656428ba61cf43cad02d7a012a757ec9328b2439c"
+      "bytes": 10025,
+      "sha256": "d765b7008340041a0814899af79208ff8ea39492e91a7f0ec3e21622694fb67c"
     },
     {
       "path": "manual-worksite.mjs",
-      "bytes": 19578,
-      "sha256": "f972ef5d15e04b39eca760067f5b48273a5fe48cbf73cdd9dadaf13b8b99d5f3"
+      "bytes": 19587,
+      "sha256": "9af90509250633a0961c2ac32ed93e567ef2fbef0ae544b2a52ad9a9e230f7e3"
     },
     {
       "path": "mine-core.mjs",
@@ -442,13 +442,13 @@
     },
     {
       "path": "sarbay.html",
-      "bytes": 6398,
-      "sha256": "8128d7f4b9ee2a2d48acaf2a98c3387d664bb3889f69fed588bb777d89173992"
+      "bytes": 6400,
+      "sha256": "ef5e14a856b8c81e12319ec3ff77960c172b83283639ef3d6ba79c57f847940b"
     },
     {
       "path": "sokolov.html",
-      "bytes": 6400,
-      "sha256": "3317981228f4edcea8c336a0b6cc5178b7a59defc9a8d0543242e03bbc217f1c"
+      "bytes": 6402,
+      "sha256": "0906aec40f9c16d39ed963f8d947bed8bf34042b663df95b1956b6a3c84f3eaf"
     },
     {
       "path": "stockpile-colliders.mjs",

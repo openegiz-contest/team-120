@@ -1,7 +1,7 @@
 import * as THREE from './vendor/three/build/three.module.js';
 import {groundPose} from './manual-core.mjs?v=4';
 import {BODY,hull,boxContact,contactImpulse,damageFromImpact,OrePatch,advanceOre,bedEntry,ORE_DENSITY,BUCKET_CAPACITY,TRUCK_CAPACITY} from './manual-physics-core.mjs?v=4';
-import {createRockfalls} from './manual-rockfalls.mjs?v=1';
+import {createRockfalls} from './manual-rockfalls.mjs?v=rockfall-2';
 
 export function createManualWorksite({scene,sessions,sample,orient,blockers,onNotice,roadRoute=[]}){
   const root=new THREE.Group();root.name='Manual / physical worksite';scene.add(root);

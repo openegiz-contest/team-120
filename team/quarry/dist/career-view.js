@@ -6,7 +6,7 @@ import {buildGraph,STATES} from './dispatch-core.mjs';
 import {CareerSimulation,ECONOMY} from './career-core.mjs';
 import {addQuarryLandscape,configureLandscapeCamera,containLandscapeCamera,createQuarryCameraGuard} from './quarry-landscape.mjs';
 import {loadQuarrySurfaceMaps,applyQuarrySurfaceMaterials} from './quarry-materials.mjs?v=closeup-1';
-import {createManualControls} from './manual-controls.mjs?v=closeup-1';
+import {createManualControls} from './manual-controls.mjs?v=rockfall-2';
 import {createQuarryCloseup} from './quarry-closeup.mjs?v=closeup-1';
 import {enableVehicleShadows} from './quarry-contact-shadows.mjs?v=closeup-1';
 import {createTruckRunningGear} from './running-gear.mjs?v=2';

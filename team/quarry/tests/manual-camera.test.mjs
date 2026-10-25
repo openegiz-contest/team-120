@@ -69,3 +69,14 @@ test('truck framing fits the full chassis on desktop and phone with room around 
     assert.ok(Math.max(...corners.map(p=>p.y))-Math.min(...corners.map(p=>p.y))>.55,'vehicle too small');rig.end();
   }
 });
+
+test('rockfall inspection frames the source and landing zone and restores vehicle follow exactly',()=>{
+  const {camera,controls,session,rig}=fixture();rig.useDrivingFraming();controls.update=()=>camera.lookAt(controls.target);
+  const orbit=camera.position.clone().sub(controls.target),hazard={position:{x:30,y:4,z:10},source:{x:30,y:28,z:26}};
+  assert.equal(rig.inspectRockfall({position:null}),false);assert.equal(rig.inspectRockfall(hazard),true);assert.equal(rig.inspecting,true);
+  for(const point of [hazard.position,hazard.source]){const p=new THREE.Vector3(point.x,point.y,point.z).project(camera);assert.ok(Math.abs(p.x)<.9&&Math.abs(p.y)<.9&&p.z<1)}
+  const target=controls.target.clone();session.mesh.position.x=15;rig.update();assert.ok(controls.target.distanceTo(target)<1e-9);
+  rig.stopInspection();assert.equal(rig.inspecting,false);assert.equal(camera.fov,46);assert.ok(camera.position.clone().sub(controls.target).distanceTo(orbit)<1e-8);assert.equal(controls.target.x,15);
+  rig.setMode('cab');rig.inspectRockfall(hazard);rig.stopInspection();assert.equal(rig.mode,'cab');assert.equal(camera.fov,72);assert.equal(controls.enabled,false);
+  rig.inspectRockfall(hazard);rig.end();assert.equal(rig.inspecting,false);assert.equal(camera.fov,39);assert.deepEqual(camera.position.toArray(),[900,1100,1100]);
+});
