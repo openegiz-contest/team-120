@@ -81,7 +81,7 @@ Group=quarry-monitor
 EnvironmentFile=/etc/openegiz-monitoring/grafana.env
 Environment=GF_PATHS_DATA=/var/lib/quarry-monitor/grafana
 Environment=GF_PATHS_PROVISIONING=/etc/openegiz-monitoring/provisioning
-Environment=GF_PATHS_BUNDLED_PLUGINS=/opt/quarry-grafana/usr/share/grafana/plugins-bundled
+Environment=GF_PATHS_BUNDLED_PLUGINS=/opt/quarry-grafana/usr/share/grafana/data/plugins-bundled
 Environment=GF_LOG_MODE=console
 ExecStart=/opt/quarry-grafana/usr/share/grafana/bin/grafana server --homepath=/opt/quarry-grafana/usr/share/grafana --config=/etc/openegiz-monitoring/grafana.ini
 Restart=on-failure
